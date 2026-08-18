@@ -98,8 +98,10 @@ services:
       - "127.0.0.1:9058:9000"
     restart: always
     environment:
-      - php_user=1000
-      - php_group=1000
+      # Musi odpovidat vlastnikovi /data/www/kanonmaker (kata = 1001).
+      # Ostatni projekty maji 1000, protoze je vlastni kamm.
+      - php_user=1001
+      - php_group=1001
       - php_rootdir=/data/www/kanonmaker
     volumes:
       - type: bind
@@ -176,6 +178,25 @@ sudo docker ps --filter name=kanon --format '{{.Names}} {{.Status}} {{.Ports}}'
 Expected: two lines, `kanon-www` and `kanon-db`, both `Up`, with ports `127.0.0.1:9058->9000/tcp` and `127.0.0.1:3309->3306/tcp`.
 
 This server has compose **v1** (`docker-compose`, hyphenated), not the v2 `docker compose` plugin — `docker compose` fails with `unknown shorthand flag: 'd'`.
+
+**`php_user` must match the uid that owns the project directory.** Here that is
+`kata` = 1001. The other projects on this server use 1000 because `kamm` owns
+them. Get this wrong and PHP-FPM cannot read `config.local.php` (mode 600), and
+every page dies with `Failed to open stream: Permission denied` — visible only in
+`/var/log/apache2/error_log.kanonmaker`, because the browser just gets a blank page.
+
+**Recreating a container fails on this server.** compose v1.29 is incompatible
+with Docker 29: `KeyError: 'ContainerConfig'`, because Docker no longer reports
+that field. It renames the old container first and then dies, leaving a stale
+`<hash>_kanon-www` behind that makes every later attempt fail the same way. The
+way through is to delete the container and any stale copy, then bring it up:
+
+```bash
+sudo docker rm -f kanon-www $(sudo docker ps -aq --filter name=_kanon-www)
+cd /data/www/kanonmaker/startup && sudo docker-compose up -d
+```
+
+Creating a container from nothing works fine; only recreation is affected.
 
 - [ ] **Step 4: Verify the database accepts the application user**
 
