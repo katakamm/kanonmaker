@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Kanon\Db\Database;
+use Kanon\Db\Migrator;
+
+$config   = require __DIR__ . '/../config.php';
+$migrator = new Migrator(Database::connect($config['db']), __DIR__ . '/../db/migrations');
+
+$applied = $migrator->migrate();
+
+if ($applied === []) {
+    echo "Nothing to migrate.\n";
+    exit(0);
+}
+
+foreach ($applied as $name) {
+    echo "applied {$name}\n";
+}

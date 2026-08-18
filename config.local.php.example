@@ -1,0 +1,13 @@
+<?php
+
+declare(strict_types=1);
+
+return [
+    'db' => [
+        'host'     => 'kanon-db',
+        'port'     => 3306,
+        'database' => 'kanonmaker',
+        'user'     => 'kanonmaker',
+        'password' => 'change-me-app',
+    ],
+];
