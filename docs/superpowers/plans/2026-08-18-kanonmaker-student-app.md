@@ -941,6 +941,41 @@ if ($match === null) {
 ($match['handler'])($match['params'])->send();
 ```
 
+- [ ] **Step 10b: Route every unknown path to the front controller**
+
+Without this Apache answers 404 itself and `index.php` never runs, so every
+route except `/` is dead. Create `public/.htaccess`:
+
+```apache
+# Vše, co není skutečný soubor, obsluhuje jediný vstupní bod.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Statické soubory nepatří do PHP.
+<FilesMatch "\.(css|js|svg|woff2?|png|jpg)$">
+    SetHandler none
+</FilesMatch>
+```
+
+`mod_rewrite` is enabled on this server and the vhost sets `AllowOverride All`.
+
+- [ ] **Step 10c: Create the session directory**
+
+The PHP image sets `session.save_path` to `<project>/session`, which does not
+exist in a fresh checkout. `session_start()` then fails **silently**: every
+request gets an empty session, so the CSRF token is regenerated each time and
+every form submission is rejected as expired. The same directory exists in
+production for the same reason.
+
+```bash
+cd /data/www/kanonmaker && mkdir -p session tmp && chmod 700 session tmp
+printf '/session/\n/tmp/\n' >> .gitignore
+```
+
 - [ ] **Step 11: Check it in a browser at phone width**
 
 Run:

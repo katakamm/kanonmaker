@@ -13,6 +13,10 @@ if (is_file($appRoot . '/chyby.php')) {
 
 require $appRoot . '/vendor/autoload.php';
 
+use Kanon\App\Controller\AuthController;
+use Kanon\Auth\Auth;
+use Kanon\Auth\LoginThrottle;
+use Kanon\Auth\UserRepository;
 use Kanon\Db\Database;
 use Kanon\Http\Csrf;
 use Kanon\Http\PhpSession;
@@ -28,20 +32,24 @@ $view    = new View($appRoot . '/templates');
 
 $canonId = (int) $pdo->query("SELECT id FROM canon WHERE school_year = '2025/2026'")->fetchColumn();
 
+$users    = new UserRepository($pdo);
+$throttle = new LoginThrottle($pdo);
+$auth     = new Auth($users, $throttle, $session);
+
 // Filled in by the list wiring below; until a student is logged in, nobody has a list.
 $listIds = static fn (): array => [];
 
 // Every template gets user, csrfToken, inList and back for free, so no
 // controller has to remember them. A controller may still override any of them.
-$page = function (string $title, string $template, array $data = []) use ($view, $session, $csrf, &$listIds): string {
+$page = function (string $title, string $template, array $data = []) use ($view, $session, $csrf, $auth, &$listIds): string {
     return $view->render('layout', [
         'title'     => $title,
-        'user'      => null,
+        'user'      => $auth->user(),
         'csrfToken' => $csrf->token(),
         'flashes'   => $session->takeFlashes(),
         'rulebar'   => '',
         'content'   => $view->render($template, $data + [
-            'user'      => null,
+            'user'      => $auth->user(),
             'csrfToken' => $csrf->token(),
             'inList'    => ($listIds)(),
             'back'      => '/',
@@ -50,6 +58,14 @@ $page = function (string $title, string $template, array $data = []) use ($view,
 };
 
 $router = new Router();
+
+$authController = new AuthController($auth, $users, $throttle, $session, $csrf, $page);
+
+$router->get('/registrace', static fn (): Response => $authController->showRegister());
+$router->post('/registrace', static fn (): Response => $authController->register($_POST));
+$router->get('/prihlaseni', static fn (): Response => $authController->showLogin());
+$router->post('/prihlaseni', static fn (): Response => $authController->login($_POST));
+$router->post('/odhlasit', static fn (): Response => $authController->logout($_POST));
 
 $router->get('/', static fn (): Response => Response::html($page('Maturitní seznam četby', 'home-guest')));
 

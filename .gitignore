@@ -6,3 +6,5 @@
 /admin/approot.php
 /.phpunit.cache/
 /.phpunit.result.cache
+/session/
+/tmp/

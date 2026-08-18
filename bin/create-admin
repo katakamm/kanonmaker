@@ -1,0 +1,33 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Kanon\Auth\UserRepository;
+use Kanon\Db\Database;
+
+if ($argc < 4) {
+    fwrite(STDERR, "Usage: bin/create-admin <email> <password> <name>\n");
+    exit(1);
+}
+
+[$script, $email, $password, $name] = $argv;
+
+$config = require __DIR__ . '/../config.php';
+$users  = new UserRepository(Database::connect($config['db']));
+
+if ($users->exists($email)) {
+    fwrite(STDERR, "An account with that e-mail already exists.\n");
+    exit(1);
+}
+
+if (strlen($password) < 8) {
+    fwrite(STDERR, "The password must be at least 8 characters.\n");
+    exit(1);
+}
+
+$id = $users->create($email, $password, $name, 'admin');
+
+echo "Created admin #{$id} <{$email}>\n";
