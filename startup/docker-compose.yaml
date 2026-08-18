@@ -1,0 +1,45 @@
+# Kanonmaker - lokalni vyvojove prostredi.
+# Cesty jsou mapovane identicky (host == kontejner), stejne jako u ostatnich
+# projektu na tomto serveru, takze se nikde neprekladaji cesty.
+# Produkce ma jine rozlozeni a nasazuje se pres tar/ssh - viz ~/CLAUDE.md.
+services:
+  kanon-www:
+    image: 'slimakcz/images:php83_2026_default'
+    container_name: kanon-www
+    networks:
+      - kanon-net
+    ports:
+      - "127.0.0.1:9058:9000"
+    restart: always
+    environment:
+      - php_user=1000
+      - php_group=1000
+      - php_rootdir=/data/www/kanonmaker
+    volumes:
+      - type: bind
+        source: /data/www/kanonmaker
+        target: /data/www/kanonmaker
+
+  kanon-db:
+    image: 'mariadb:10.11'
+    container_name: kanon-db
+    networks:
+      - kanon-net
+    ports:
+      # jen pro ladeni z hostu; 3306-3308 uz zabiraji jine projekty
+      - "127.0.0.1:3309:3306"
+    restart: always
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_DATABASE=kanonmaker
+      - MARIADB_USER=kanonmaker
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+    volumes:
+      - kanon-db-data:/var/lib/mysql
+
+networks:
+  kanon-net:
+    name: kanon-net
+
+volumes:
+  kanon-db-data:

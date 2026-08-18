@@ -134,9 +134,15 @@ volumes:
 Create `startup/.env.example`:
 
 ```
+COMPOSE_PROJECT_NAME=kanonmaker
 MARIADB_ROOT_PASSWORD=change-me-root
 MARIADB_PASSWORD=change-me-app
 ```
+
+`COMPOSE_PROJECT_NAME` is not optional. Without it compose names the project
+after its directory, `startup`, which several other sites on this server also
+use — and a `docker-compose down --remove-orphans` would then reach into their
+containers.
 
 - [ ] **Step 2: Create the real .env and gitignore it**
 
@@ -152,7 +158,7 @@ Then create the real file with generated passwords:
 
 ```bash
 cd /data/www/kanonmaker/startup
-printf 'MARIADB_ROOT_PASSWORD=%s\nMARIADB_PASSWORD=%s\n' \
+printf 'COMPOSE_PROJECT_NAME=kanonmaker\nMARIADB_ROOT_PASSWORD=%s\nMARIADB_PASSWORD=%s\n' \
   "$(openssl rand -base64 18 | tr -d '/+=')" \
   "$(openssl rand -base64 18 | tr -d '/+=')" > .env
 chmod 600 .env
@@ -163,11 +169,13 @@ chmod 600 .env
 Run:
 
 ```bash
-cd /data/www/kanonmaker/startup && sudo docker compose up -d
+cd /data/www/kanonmaker/startup && sudo docker-compose up -d
 sudo docker ps --filter name=kanon --format '{{.Names}} {{.Status}} {{.Ports}}'
 ```
 
 Expected: two lines, `kanon-www` and `kanon-db`, both `Up`, with ports `127.0.0.1:9058->9000/tcp` and `127.0.0.1:3309->3306/tcp`.
+
+This server has compose **v1** (`docker-compose`, hyphenated), not the v2 `docker compose` plugin — `docker compose` fails with `unknown shorthand flag: 'd'`.
 
 - [ ] **Step 4: Verify the database accepts the application user**
 
@@ -177,7 +185,15 @@ Run:
 sudo docker exec kanon-db mariadb -ukanonmaker -p"$(grep MARIADB_PASSWORD= /data/www/kanonmaker/startup/.env | cut -d= -f2)" -e 'SELECT DATABASE();' kanonmaker
 ```
 
-Expected: a table printing `kanonmaker`. If this fails, the container is still initialising — wait ten seconds and repeat.
+Expected: a table printing `kanonmaker`. MariaDB takes about half a minute to initialise on first start, so retry rather than concluding the credentials are wrong:
+
+```bash
+for i in $(seq 6); do
+  sudo docker exec kanon-db mariadb -ukanonmaker \
+    -p"$(grep '^MARIADB_PASSWORD=' /data/www/kanonmaker/startup/.env | cut -d= -f2)" \
+    -e 'SELECT DATABASE();' kanonmaker && break || sleep 5
+done
+```
 
 - [ ] **Step 5: Write the two front controllers**
 
