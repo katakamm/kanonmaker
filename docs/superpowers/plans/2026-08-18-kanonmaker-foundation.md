@@ -2330,14 +2330,29 @@ final class ImporterTest extends TestCase
         $this->pdo = Database::connect($config['db']);
         (new Migrator($this->pdo, $root . '/db/migrations'))->migrate();
 
-        $this->canonId = (int) $this->pdo->query(
-            "SELECT id FROM canon WHERE school_year = '2025/2026'"
-        )->fetchColumn();
-
         $this->html = dirname(__DIR__) . '/fixtures/canon-sample.html';
         $this->csv  = dirname(__DIR__) . '/fixtures/tags-sample.csv';
 
         $this->pdo->beginTransaction();
+
+        // Import into a throwaway canon of its own, never the real 2025/2026 one.
+        // Sharing it would make these assertions depend on whether the real
+        // canon happens to have been imported yet.
+        $realCanonId = (int) $this->pdo->query(
+            "SELECT id FROM canon WHERE school_year = '2025/2026'"
+        )->fetchColumn();
+
+        $this->pdo->exec("INSERT INTO school (name) VALUES ('Testovací škola')");
+        $schoolId = (int) $this->pdo->lastInsertId();
+
+        $this->pdo->prepare('INSERT INTO canon (school_id, school_year) VALUES (?, ?)')
+            ->execute([$schoolId, 'test/0000']);
+        $this->canonId = (int) $this->pdo->lastInsertId();
+
+        $this->pdo->prepare(
+            'INSERT INTO tag (canon_id, tag_group, code, label, sort_order)
+             SELECT ?, tag_group, code, label, sort_order FROM tag WHERE canon_id = ?'
+        )->execute([$this->canonId, $realCanonId]);
     }
 
     protected function tearDown(): void
@@ -2490,9 +2505,11 @@ final class ImporterTest extends TestCase
              WHERE wt.work_id = ? AND t.tag_group = 'podobdobi'"
         )->execute([$id]);
 
-        $tagId = (int) $this->pdo->query(
-            "SELECT id FROM tag WHERE tag_group = 'podobdobi' AND code = 'stredovek' LIMIT 1"
-        )->fetchColumn();
+        $stmt = $this->pdo->prepare(
+            "SELECT id FROM tag WHERE canon_id = ? AND tag_group = 'podobdobi' AND code = 'stredovek'"
+        );
+        $stmt->execute([$this->canonId]);
+        $tagId = (int) $stmt->fetchColumn();
 
         $this->pdo->prepare(
             "INSERT INTO work_tag (work_id, tag_id, source, verified) VALUES (?, ?, 'human', 1)"
@@ -4539,6 +4556,6 @@ git push
 ## Notes for the executor
 
 - **Run everything inside the container.** There is no PHP binary on the host. Every command in this plan is already written with `sudo docker exec -w /data/www/kanonmaker kanon-www …`.
-- **The database tests are not isolated from each other by a framework.** `ImporterTest` wraps itself in a transaction and rolls back; `MigratorTest`, `SeedTest`, `RuleSetTest` and `CanonCoverageTest` read committed state. Run the suite against the development database, never a production one.
+- **The database tests are not isolated from each other by a framework.** `ImporterTest` creates a throwaway canon inside a transaction and rolls back — it must never import into the real 2025/2026 canon, or its counts start depending on whether `bin/import` has been run; `MigratorTest`, `SeedTest`, `RuleSetTest` and `CanonCoverageTest` read committed state. Run the suite against the development database, never a production one.
 - **If a test asserting a count against the real snapshot fails** (358 entries, ~454 works), do not adjust the number to make it pass. It means the snapshot or the splitter changed, and the spec's figures need revisiting first.
 - **Task 14 is data authorship and will take the longest.** It is worth doing carefully: every wrong tag becomes a rule check that lies to a student.
