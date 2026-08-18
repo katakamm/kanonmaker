@@ -1,0 +1,10 @@
+work_key,author,title,group,code
+1|aischylos|oresteia,AISCHYLOS,Oresteia,narodni,svetova
+1|aischylos|oresteia,AISCHYLOS,Oresteia,forma,drama
+1|aischylos|oresteia,AISCHYLOS,Oresteia,podobdobi,starovek
+1|anon|beowulf,,Beowulf,narodni,svetova
+1|anon|beowulf,,Beowulf,podobdobi,stredovek
+1|shakespeare-william|hamlet,"SHAKESPEARE, William",Hamlet,narodni,svetova
+1|shakespeare-william|hamlet,"SHAKESPEARE, William",Hamlet,forma,drama
+1|shakespeare-william|hamlet,"SHAKESPEARE, William",Hamlet,podobdobi,renesance
+2|capek-karel|krakatit,"ČAPEK, Karel",Krakatit,,
