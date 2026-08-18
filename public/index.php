@@ -15,6 +15,7 @@ require $appRoot . '/vendor/autoload.php';
 
 use Kanon\App\Controller\AuthController;
 use Kanon\App\Controller\CanonController;
+use Kanon\App\Controller\ExportController;
 use Kanon\App\Controller\ListController;
 use Kanon\App\Controller\SearchController;
 use Kanon\App\RuleBar;
@@ -89,6 +90,10 @@ $authController   = new AuthController($auth, $users, $throttle, $session, $csrf
 $canonController  = new CanonController($workRepo, $canonId, $page, $listIds);
 $searchController = new SearchController($workRepo, $canonId, $page, $listIds);
 $listController   = new ListController($auth, $listRepo, $workRepo, $session, $csrf, $canonId, $page);
+$exportController = new ExportController(
+    $auth, $listRepo, $workRepo, $ruleSet, $viewLoader,
+    $session, $csrf, $canonId, '2025/2026', $page
+);
 
 $router = new Router();
 
@@ -109,6 +114,9 @@ $router->get('/hledat.json', static fn (): Response => $searchController->json($
 
 $router->post('/seznam/pridat', static fn (): Response => $listController->add($_POST));
 $router->post('/seznam/odebrat', static fn (): Response => $listController->remove($_POST));
+
+$router->get('/export', static fn (): Response => $exportController->form());
+$router->post('/export', static fn (): Response => $exportController->pdf($_POST));
 
 $router->get('/', static function () use ($page, $auth, $listController): Response {
     return $auth->check()
