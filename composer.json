@@ -1,0 +1,24 @@
+{
+    "name": "katakamm/kanonmaker",
+    "description": "Nastroj pro sestaveni maturitniho seznamu cetby",
+    "type": "project",
+    "require": {
+        "php": ">=8.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kanon\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kanon\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
