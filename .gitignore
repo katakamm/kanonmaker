@@ -9,3 +9,4 @@
 /session/
 /tmp/
 /admin/assets
+/config.production.php

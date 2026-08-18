@@ -6,9 +6,14 @@ $appRoot = is_file(__DIR__ . '/approot.php')
     ? (string) require __DIR__ . '/approot.php'
     : dirname(__DIR__);
 
-// Production captures PHP errors itself; FPM there locks error_log.
-if (is_file($appRoot . '/chyby.php')) {
-    require $appRoot . '/chyby.php';
+// Production captures PHP errors itself; FPM there locks error_log. The
+// handler lives inside the document root on production and beside the app in
+// development, so both places are checked.
+foreach ([__DIR__ . '/chyby.php', $appRoot . '/chyby.php'] as $errorHandler) {
+    if (is_file($errorHandler)) {
+        require $errorHandler;
+        break;
+    }
 }
 
 require $appRoot . '/vendor/autoload.php';

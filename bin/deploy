@@ -1,0 +1,133 @@
+#!/usr/bin/env bash
+#
+# Nasazení na produkci (kata.slimak.cz).
+#
+# Spouští se z vývojového serveru, NE z produkce: produkční kontejner, do
+# kterého vede SSH, nemá PHP ani composer - PHP běží ve vedlejším kontejneru
+# nad stejným adresářem. Proto se tam kód jen dopraví (git + tar) a migrace
+# i import se pouštějí odtud proti produkční databázi, která je odsud dostupná.
+#
+# Použití:
+#   bin/deploy code      jen kód (git pull na produkci + vendor přes tar)
+#   bin/deploy db        jen databáze (migrace + import proti produkci)
+#   bin/deploy all       obojí
+#   bin/deploy check     nic nemění, jen ověří přístupy a vypíše stav
+set -euo pipefail
+
+SSH_HOST=www@ht2.3kt.cz
+SSH_PORT=8053
+# -A: klíč se na produkci neukládá, používá se přeposlaný z agenta.
+SSH="ssh -A -p ${SSH_PORT} ${SSH_HOST}"
+
+REMOTE_HOME=/data/www/kata.slimak.cz
+REMOTE_APP=${REMOTE_HOME}/kanonmaker
+REMOTE_DOCROOT=${REMOTE_HOME}/kata.slimak.cz/htdocs_3ecd01dda5d32f4cdace8c002a2b6c6a
+LOCAL=/data/www/kanonmaker
+BRANCH=${BRANCH:-main}
+REPO=git@github.com:katakamm/kanonmaker.git
+
+step() { printf '\n\033[1m== %s\033[0m\n' "$1"; }
+
+check() {
+    step "Přístupy"
+    $SSH 'echo "  ssh ok: $(hostname), $(id -un)"'
+    $SSH "timeout 15 git ls-remote ${REPO} >/dev/null && echo '  github přes přeposlaný klíč: ok'"
+    mysql -h db2.hosting.3kt.cz -u kata -p"${DB_PASS}" -N -e 'SELECT CONCAT("  databáze: ", VERSION())' kata
+
+    step "Stav produkce"
+    $SSH "ls -d ${REMOTE_APP} 2>/dev/null && echo '  aplikace: nasazena' || echo '  aplikace: ještě nenasazena'"
+    $SSH "ls ${REMOTE_DOCROOT}/www/ ${REMOTE_DOCROOT}/admin/"
+    echo "  tabulek v produkční databázi: $(mysql -h db2.hosting.3kt.cz -u kata -p"${DB_PASS}" -N -e 'SHOW TABLES' kata | wc -l)"
+}
+
+code() {
+    step "Kód na produkci (větev ${BRANCH})"
+    $SSH "set -e
+        if [ -d ${REMOTE_APP}/.git ]; then
+            cd ${REMOTE_APP} && git fetch --quiet origin && git checkout --quiet ${BRANCH} && git reset --hard --quiet origin/${BRANCH}
+        else
+            git clone --quiet --branch ${BRANCH} ${REPO} ${REMOTE_APP}
+        fi
+        cd ${REMOTE_APP} && echo \"  na commitu \$(git rev-parse --short HEAD)\""
+
+    step "vendor/ přes tar (na produkci není composer)"
+    tar czf - -C "${LOCAL}" vendor | $SSH "cd ${REMOTE_APP} && rm -rf vendor && tar xzf - && echo '  vendor rozbalen'"
+
+    step "Vstupní body a statické soubory do docrootů"
+    # Docroot obsahuje jen to, co MÁ být veřejné. Zbytek je o úroveň výš.
+    $SSH "set -e
+        cp ${REMOTE_APP}/public/index.php   ${REMOTE_DOCROOT}/www/index.php
+        cp ${REMOTE_APP}/public/.htaccess   ${REMOTE_DOCROOT}/www/.htaccess
+        cp ${REMOTE_APP}/admin/index.php    ${REMOTE_DOCROOT}/admin/index.php
+        cp ${REMOTE_APP}/admin/.htaccess    ${REMOTE_DOCROOT}/admin/.htaccess
+        rm -rf ${REMOTE_DOCROOT}/www/assets ${REMOTE_DOCROOT}/admin/assets
+        cp -r ${REMOTE_APP}/public/assets   ${REMOTE_DOCROOT}/www/assets
+        cp -r ${REMOTE_APP}/public/assets   ${REMOTE_DOCROOT}/admin/assets
+        printf '<?php return %s;\n' \"'${REMOTE_APP}'\" > ${REMOTE_DOCROOT}/www/approot.php
+        printf '<?php return %s;\n' \"'${REMOTE_APP}'\" > ${REMOTE_DOCROOT}/admin/approot.php
+        echo '  vstupní body i assets na místě'"
+
+    step "Konfigurace (mimo docroot, není v gitu)"
+    $SSH "cat > ${REMOTE_APP}/config.local.php" <<PHP
+<?php
+
+declare(strict_types=1);
+
+return [
+    'db' => [
+        'host'     => 'db2.hosting.3kt.cz',
+        'port'     => 3306,
+        'database' => 'kata',
+        'user'     => 'kata',
+        'password' => '${DB_PASS}',
+    ],
+];
+PHP
+    $SSH "chmod 600 ${REMOTE_APP}/config.local.php && echo '  config.local.php zapsán'"
+}
+
+db() {
+    step "Migrace a import proti produkční databázi"
+    # Běží odtud: produkční kontejner nemá PHP.
+    cat > "${LOCAL}/config.production.php" <<PHP
+<?php
+
+declare(strict_types=1);
+
+return [
+    'db' => [
+        'host'     => 'db2.hosting.3kt.cz',
+        'port'     => 3306,
+        'database' => 'kata',
+        'user'     => 'kata',
+        'password' => '${DB_PASS}',
+    ],
+];
+PHP
+    chmod 600 "${LOCAL}/config.production.php"
+    trap 'rm -f "${LOCAL}/config.production.php"' EXIT
+
+    sudo docker exec -w /data/www/kanonmaker -e KANON_CONFIG=config.production.php kanon-www php bin/migrate
+    sudo docker exec -w /data/www/kanonmaker -e KANON_CONFIG=config.production.php kanon-www php bin/import
+}
+
+verify() {
+    step "Kontrola"
+    for url in https://kata.slimak.cz/ https://kata-admin.slimak.cz/prihlaseni; do
+        printf '  %-45s %s\n' "$url" "$(curl -s -o /dev/null -w '%{http_code}' "$url")"
+    done
+    echo "  obsah studentského webu:"
+    curl -s https://kata.slimak.cz/kanon | grep -c 'class="work"' | sed 's/^/    děl na stránce: /'
+    echo "  chyby PHP:"
+    $SSH "tail -5 ${REMOTE_HOME}/tmp/php-error.log 2>/dev/null || echo '    (log je prázdný)'"
+}
+
+: "${DB_PASS:?Nastav DB_PASS - heslo k produkční databázi (je v ~/CLAUDE.md)}"
+
+case "${1:-check}" in
+    check)  check ;;
+    code)   code; verify ;;
+    db)     db; verify ;;
+    all)    code; db; verify ;;
+    *)      echo "Použití: bin/deploy {check|code|db|all}" >&2; exit 1 ;;
+esac

@@ -6,8 +6,11 @@ $appRoot = is_file(__DIR__ . '/approot.php')
     ? (string) require __DIR__ . '/approot.php'
     : dirname(__DIR__);
 
-if (is_file($appRoot . '/chyby.php')) {
-    require $appRoot . '/chyby.php';
+foreach ([__DIR__ . '/chyby.php', $appRoot . '/chyby.php'] as $errorHandler) {
+    if (is_file($errorHandler)) {
+        require $errorHandler;
+        break;
+    }
 }
 
 require $appRoot . '/vendor/autoload.php';
