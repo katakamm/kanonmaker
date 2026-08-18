@@ -57,10 +57,12 @@ final class AuthTest extends TestCase
 
     public function testEmailIsCaseInsensitive(): void
     {
-        $this->users->create('Kata@Example.Test', 'tajneheslo123', 'Kata');
+        // Must not be a fixed address: real accounts exist in this database.
+        $mixedCase = 'Kata' . bin2hex(random_bytes(4)) . '@Example.Test';
+        $this->users->create($mixedCase, 'tajneheslo123', 'Kata');
 
-        self::assertNotNull($this->users->findByEmail('kata@example.test'));
-        self::assertTrue($this->users->exists('KATA@EXAMPLE.TEST'));
+        self::assertNotNull($this->users->findByEmail(mb_strtolower($mixedCase)));
+        self::assertTrue($this->users->exists(mb_strtoupper($mixedCase)));
     }
 
     public function testAttemptSucceedsWithTheRightPasswordAndFailsOtherwise(): void
