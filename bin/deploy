@@ -16,7 +16,16 @@ set -euo pipefail
 
 SSH_HOST=www@ht2.3kt.cz
 SSH_PORT=8053
-# -A: klíč se na produkci neukládá, používá se přeposlaný z agenta.
+
+# Trvalý agent tohoto serveru. Nasazení tak nezávisí na tom, jestli je zrovna
+# připojený notebook s PuTTY - funguje i z mobilu nebo z cronu.
+AGENT_SOCK="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/ssh-agent.socket"
+if [ -S "${AGENT_SOCK}" ]; then
+    export SSH_AUTH_SOCK="${AGENT_SOCK}"
+fi
+
+# -A přepošle agenta na produkci, aby si mohla stáhnout kód z GitHubu;
+# vlastní klíč tam díky tomu nezůstává.
 SSH="ssh -A -p ${SSH_PORT} ${SSH_HOST}"
 
 REMOTE_HOME=/data/www/kata.slimak.cz

@@ -63,3 +63,15 @@ Prvního správce založí:
 ```bash
 sudo docker exec -w /data/www/kanonmaker kanon-www php bin/create-admin <e-mail> <heslo> <jméno>
 ```
+
+## Nasazení
+
+```bash
+set -a; . ~/.config/kanonmaker/production.env; set +a
+bin/deploy check    # ověří ssh, github a databázi, nic nemění
+bin/deploy all      # kód i databáze
+```
+
+Nasazení nepotřebuje notebook: klíč `~/.ssh/id_ed25519` má tento server u sebe
+a drží ho trvalý agent (`systemctl --user status ssh-agent`). Produkci se
+přeposílá přes `ssh -A`, takže tam žádný klíč nezůstává.
