@@ -3070,6 +3070,31 @@ git commit -m "feat: idempotent importer with report, dry run and tag scaffold"
 
 ---
 
+### Task 9b: Correct the document's malformed entries *(added during execution)*
+
+**Files:**
+- Created: `src/Import/EntryFixes.php`, `data/entry-fixes-2025-2026.json`, `tests/fixtures/entry-fixes-sample.json`, `tests/Import/EntryFixesTest.php`, `tests/Import/CanonIntegrityTest.php`
+- Modified: `src/Import/Importer.php`, `src/Import/ImportReport.php`, `bin/import`
+
+This task was not in the original plan. It was added after the first real import
+revealed that the school's document merges two entries into one paragraph five
+times — which credited four Havel plays to Dürrenmatt and left *Temno*, *Slávy
+dcera*, *Aeneis* and Dickinson unselectable — besides three commas used as title
+separators, one author's names written back to front, and the school's address
+imported as a book.
+
+`EntryFixes` applies whole-entry replacements from a committed JSON file before
+splitting; an empty replacement list drops the entry. Corrections that match
+nothing are reported, since that means the document was edited. The importer also
+gained orphan detection: works no longer in the document are listed with the
+number of student lists holding each, and deleted only under `--prune`, because
+`list_item` cascades. Authors left with no works are removed automatically.
+
+**Verification:** `bin/import --dry-run` reports `entry fixes applied 10`,
+`entry fixes unused 0`; `CanonIntegrityTest` passes (6 tests).
+
+---
+
 ### Task 10: Rules engine core — WorkView, RuleResult, MinTotal, MinCount
 
 **Files:**
@@ -4558,4 +4583,5 @@ git push
 - **Run everything inside the container.** There is no PHP binary on the host. Every command in this plan is already written with `sudo docker exec -w /data/www/kanonmaker kanon-www …`.
 - **The database tests are not isolated from each other by a framework.** `ImporterTest` creates a throwaway canon inside a transaction and rolls back — it must never import into the real 2025/2026 canon, or its counts start depending on whether `bin/import` has been run; `MigratorTest`, `SeedTest`, `RuleSetTest` and `CanonCoverageTest` read committed state. Run the suite against the development database, never a production one.
 - **If a test asserting a count against the real snapshot fails** (358 entries, ~454 works), do not adjust the number to make it pass. It means the snapshot or the splitter changed, and the spec's figures need revisiting first.
+- **Task 9b was added during execution** after the first real import exposed malformed entries in the source document. Read it before touching the importer.
 - **Task 14 is data authorship and will take the longest.** It is worth doing carefully: every wrong tag becomes a rule check that lies to a student.

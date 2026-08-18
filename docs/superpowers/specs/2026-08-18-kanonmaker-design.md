@@ -220,6 +220,15 @@ finishing a list.
 
 Stages:
 
+0. **Correct** — apply `data/entry-fixes-2025-2026.json`, a committed list of
+   whole-entry replacements for paragraphs that are malformed in the school's
+   own document. Five of them contain two entries each (which credited four
+   Havel plays to Dürrenmatt and hid *Temno*, *Slávy dcera*, *Aeneis* and
+   Dickinson entirely), three use a comma where a semicolon was meant, one
+   writes García Márquez's names back to front, and the final paragraph is the
+   school's address rather than a book. Matching is on the exact entry text; a
+   correction that stops matching is reported, not ignored, because that means
+   the document has been edited.
 1. **Parse** — read `data/canon-2025-2026.html`, extract paragraphs, split into
    chapters at the seven known headings, and treat every remaining paragraph as
    an entry. Retain the raw text as `work.source_line`.
@@ -241,8 +250,16 @@ Stages:
 The curated tag file is authored as data in the repository rather than generated
 at run time: it is reviewable, diffable, and keeps the importer deterministic.
 
+A work already in the database that the run never sees is **orphaned** — left
+over from an earlier import of a document that has since changed. Orphans are
+listed with the number of student lists holding each, and deleted only when the
+import is asked to `--prune`, because deleting a work cascades into students'
+lists. Authors left with no works at all are removed automatically, having
+nothing left to describe.
+
 Every run ends with a report — works created, updated and unchanged; tags by
-source; and anything the importer declined to guess. The administration runs it
+source; corrections applied and unused; orphans; and anything the importer
+declined to guess. The administration runs it
 as a dry run first and applies it only after the numbers have been read.
 
 ## 8. Student application
@@ -435,7 +452,7 @@ Test-driven, with effort concentrated where a defect is both likely and costly.
    yields nine works, the Rimbaud entry one, `Beowulf` an authorless work,
    `BABAN, MAŠEK, GRUS` three authors; and a second run creates nothing and
    overwrites no `human` tag.
-3. **Search normalization** — `capek` finds `Čapek`.
+5. **Search normalization** — `capek` finds `Čapek`.
 
 Authentication, CSRF and PDF generation are verified by use rather than by
 automated tests.
