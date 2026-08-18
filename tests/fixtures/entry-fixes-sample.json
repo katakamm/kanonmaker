@@ -1,0 +1,15 @@
+[
+    {
+        "reason": "two entries in one paragraph",
+        "broken": "DÜRRENMATT, Friedrich: Návštěva staré dámy HAVEL, Václav: Zahradní slavnost",
+        "into": [
+            "DÜRRENMATT, Friedrich: Návštěva staré dámy",
+            "HAVEL, Václav: Zahradní slavnost"
+        ]
+    },
+    {
+        "reason": "document footer, not a work",
+        "broken": "Gymnázium Jana Keplera, Parléřova 2",
+        "into": []
+    }
+]

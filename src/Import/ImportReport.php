@@ -16,6 +16,16 @@ final class ImportReport
     public int $tagsInferred     = 0;
     public int $tagsSkippedHuman = 0;
     public int $duplicateKeys    = 0;
+    public int $entriesFixed     = 0;
+
+    public int $worksPruned    = 0;
+    public int $authorsRemoved = 0;
+
+    /** @var list<string> corrections in the entry-fix file that matched nothing */
+    public array $unusedFixes = [];
+
+    /** @var list<array{match_key: string, title: string, in_lists: int}> */
+    public array $orphans = [];
 
     /** @return list<string> */
     public function lines(): array
@@ -31,6 +41,11 @@ final class ImportReport
             sprintf('tags inferred       %d', $this->tagsInferred),
             sprintf('tags kept (human)   %d', $this->tagsSkippedHuman),
             sprintf('duplicate keys      %d', $this->duplicateKeys),
+            sprintf('entry fixes applied %d', $this->entriesFixed),
+            sprintf('entry fixes unused  %d', count($this->unusedFixes)),
+            sprintf('orphaned works      %d', count($this->orphans)),
+            sprintf('works pruned        %d', $this->worksPruned),
+            sprintf('authors removed     %d', $this->authorsRemoved),
         ];
     }
 }

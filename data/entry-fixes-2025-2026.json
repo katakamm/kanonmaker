@@ -1,0 +1,75 @@
+[
+    {
+        "reason": "two entries in one paragraph in the source document",
+        "broken": "VÁCLAV VRATISLAV Z MITROVIC: Příhody Václava Vratislava z Mitrovic VERGILIUS: Aeneis (poezie)",
+        "into": [
+            "VÁCLAV VRATISLAV Z MITROVIC: Příhody Václava Vratislava z Mitrovic",
+            "VERGILIUS: Aeneis (poezie)"
+        ]
+    },
+    {
+        "reason": "two entries in one paragraph in the source document",
+        "broken": "DICKENS, Charles: Nadějné vyhlídky; David Copperfield DICKINSONOVÁ, Emily: A básníkem být nechci",
+        "into": [
+            "DICKENS, Charles: Nadějné vyhlídky; David Copperfield",
+            "DICKINSONOVÁ, Emily: A básníkem být nechci"
+        ]
+    },
+    {
+        "reason": "two entries in one paragraph in the source document",
+        "broken": "HLAVÁČEK, Karel: Hrál kdosi na hoboj (ed. Bohumil Svozil, 1979) JIRÁSEK, Alois: Temno",
+        "into": [
+            "HLAVÁČEK, Karel: Hrál kdosi na hoboj (ed. Bohumil Svozil, 1979)",
+            "JIRÁSEK, Alois: Temno"
+        ]
+    },
+    {
+        "reason": "two entries in one paragraph in the source document",
+        "broken": "KLOSTERMANN, Karel: Vánice (povídkový soubor, SNKLHU 1955) KOLLÁR, Ján: Slávy dcera",
+        "into": [
+            "KLOSTERMANN, Karel: Vánice (povídkový soubor, SNKLHU 1955)",
+            "KOLLÁR, Ján: Slávy dcera"
+        ]
+    },
+    {
+        "reason": "two entries in one paragraph in the source document",
+        "broken": "DÜRRENMATT, Friedrich: Návštěva staré dámy HAVEL, Václav: Zahradní slavnost; Ztížená možnost soustředění; tzv. vaňkovky (tj. Audience + Vernisáž + Protest); Odcházení, Pokoušení",
+        "into": [
+            "DÜRRENMATT, Friedrich: Návštěva staré dámy",
+            "HAVEL, Václav: Zahradní slavnost; Ztížená možnost soustředění; tzv. vaňkovky (tj. Audience + Vernisáž + Protest); Odcházení; Pokoušení"
+        ]
+    },
+    {
+        "reason": "comma used as a title separator",
+        "broken": "AJVAZ, Michal: Druhé město; Cesta na jih, Lucemburská zahrada",
+        "into": [
+            "AJVAZ, Michal: Druhé město; Cesta na jih; Lucemburská zahrada"
+        ]
+    },
+    {
+        "reason": "comma used as a title separator",
+        "broken": "KUNDERA, Milan: Žert; Nesnesitelná lehkost bytí; Nesmrtelnost; Kniha smíchu a zapomnění, Směšné lásky (8 povídek; vydání Československý spisovatel: 1970 nebo Atlantis: 1991)",
+        "into": [
+            "KUNDERA, Milan: Žert; Nesnesitelná lehkost bytí; Nesmrtelnost; Kniha smíchu a zapomnění; Směšné lásky (8 povídek; vydání Československý spisovatel: 1970 nebo Atlantis: 1991)"
+        ]
+    },
+    {
+        "reason": "comma used as a title separator",
+        "broken": "URBAN, Miloš: Hastrman, Poslední tečka za Rukopisy; Sedmikostelí",
+        "into": [
+            "URBAN, Miloš: Hastrman; Poslední tečka za Rukopisy; Sedmikostelí"
+        ]
+    },
+    {
+        "reason": "author's surname and given name written back to front",
+        "broken": "MÁRQUEZ, GARCÍA Gabriel: Sto roků samoty; Kronika ohlášené smrti",
+        "into": [
+            "GARCÍA MÁRQUEZ, Gabriel: Sto roků samoty; Kronika ohlášené smrti"
+        ]
+    },
+    {
+        "reason": "document footer, not a work",
+        "broken": "Gymnázium Jana Keplera, Parléřova 2, 169 00 Praha 6",
+        "into": []
+    }
+]

@@ -9,11 +9,12 @@ use Kanon\Db\Database;
 use Kanon\Import\ChapterTagger;
 use Kanon\Import\CuratedTags;
 use Kanon\Import\DocumentParser;
+use Kanon\Import\EntryFixes;
 use Kanon\Import\EntrySplitter;
 use Kanon\Import\HintTagger;
 use Kanon\Import\Importer;
 
-$options = getopt('', ['dry-run', 'scaffold-tags:', 'year:']);
+$options = getopt('', ['dry-run', 'prune', 'scaffold-tags:', 'year:']);
 $dryRun  = array_key_exists('dry-run', $options);
 $year    = $options['year'] ?? '2025/2026';
 $root    = dirname(__DIR__);
@@ -36,6 +37,7 @@ $importer = new Importer(
     new ChapterTagger(),
     new HintTagger(),
     new CuratedTags(),
+    new EntryFixes($root . '/data/entry-fixes-2025-2026.json'),
 );
 
 $report = $importer->import(
@@ -43,11 +45,35 @@ $report = $importer->import(
     $root . '/data/canon-2025-2026.html',
     $root . '/data/tags-2025-2026.csv',
     $dryRun,
+    array_key_exists('prune', $options),
 );
 
 echo $dryRun ? "DRY RUN - nothing was written\n\n" : "Import applied\n\n";
 foreach ($report->lines() as $line) {
     echo $line . "\n";
+}
+
+if ($report->orphans !== []) {
+    echo "\nThese works are in the database but no longer in the document:\n";
+    foreach ($report->orphans as $orphan) {
+        printf(
+            "  %-58s %s\n",
+            mb_strimwidth($orphan['title'], 0, 56, '…'),
+            $orphan['in_lists'] > 0
+                ? "IN {$orphan['in_lists']} STUDENT LIST(S) - pruning would remove it from them"
+                : 'in no student list'
+        );
+    }
+    if ($report->worksPruned === 0) {
+        echo "  (run with --prune to delete them)\n";
+    }
+}
+
+if ($report->unusedFixes !== []) {
+    echo "\nWARNING - these corrections matched no entry; the document may have been edited:\n";
+    foreach ($report->unusedFixes as $broken) {
+        echo '  ' . mb_strimwidth($broken, 0, 100, '…') . "\n";
+    }
 }
 
 if (isset($options['scaffold-tags'])) {

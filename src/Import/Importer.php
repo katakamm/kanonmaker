@@ -24,11 +24,17 @@ final class Importer
         private readonly ChapterTagger $chapterTagger,
         private readonly HintTagger $hintTagger,
         private readonly CuratedTags $curated,
+        private readonly ?EntryFixes $entryFixes = null,
     ) {
     }
 
-    public function import(int $canonId, string $htmlPath, string $csvPath, bool $dryRun = false): ImportReport
-    {
+    public function import(
+        int $canonId,
+        string $htmlPath,
+        string $csvPath,
+        bool $dryRun = false,
+        bool $prune = false,
+    ): ImportReport {
         $html = file_get_contents($htmlPath);
         if ($html === false) {
             throw new \RuntimeException("Cannot read snapshot: {$htmlPath}");
@@ -53,7 +59,9 @@ final class Importer
                 $chapterId   = $this->upsertChapter($canonId, $chapter['name'], $chapter['sort_order'], $report);
                 $chapterTags = $this->chapterTagger->tagsFor($chapter['name']);
 
-                foreach ($chapter['entries'] as $entry) {
+                $entries = $this->entryFixes?->apply($chapter['entries']) ?? $chapter['entries'];
+
+                foreach ($entries as $entry) {
                     $report->entriesParsed++;
 
                     foreach ($this->splitter->split($entry) as $parsed) {
@@ -80,6 +88,17 @@ final class Importer
                     }
                 }
             }
+
+            $report->entriesFixed = $this->entryFixes?->appliedCount() ?? 0;
+            $report->unusedFixes  = $this->entryFixes?->unused() ?? [];
+            $report->orphans      = $this->findOrphans($canonId, array_keys($seen));
+
+            if ($prune && $report->orphans !== []) {
+                $this->deleteWorks($canonId, array_column($report->orphans, 'match_key'));
+                $report->worksPruned = count($report->orphans);
+            }
+
+            $report->authorsRemoved = $this->deleteAuthorsWithoutWorks();
 
             if ($dryRun) {
                 $ownsTransaction
@@ -139,6 +158,67 @@ final class Importer
         }
 
         return $rows;
+    }
+
+    /**
+     * Works still in the canon that this run never saw - left over from an
+     * earlier import of a document that has since changed.
+     *
+     * @param  list<string> $seenKeys
+     * @return list<array{match_key: string, title: string, in_lists: int}>
+     */
+    private function findOrphans(int $canonId, array $seenKeys): array
+    {
+        $sql = 'SELECT w.match_key, w.title, COUNT(li.list_id) AS in_lists
+                FROM work w
+                LEFT JOIN list_item li ON li.work_id = w.id
+                WHERE w.canon_id = ?';
+
+        $params = [$canonId];
+
+        if ($seenKeys !== []) {
+            $sql .= ' AND w.match_key NOT IN (' . implode(',', array_fill(0, count($seenKeys), '?')) . ')';
+            $params = [$canonId, ...$seenKeys];
+        }
+
+        $sql .= ' GROUP BY w.id, w.match_key, w.title ORDER BY w.sort_order';
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+
+        return array_map(
+            static fn (array $r): array => [
+                'match_key' => $r['match_key'],
+                'title'     => $r['title'],
+                'in_lists'  => (int) $r['in_lists'],
+            ],
+            $stmt->fetchAll()
+        );
+    }
+
+    /**
+     * An author whose every work has gone carries no information and would
+     * otherwise linger in the administration's author list forever.
+     */
+    private function deleteAuthorsWithoutWorks(): int
+    {
+        return (int) $this->pdo->exec(
+            'DELETE a FROM author a
+             LEFT JOIN work_author wa ON wa.author_id = a.id
+             WHERE wa.author_id IS NULL'
+        );
+    }
+
+    /** @param list<string> $matchKeys */
+    private function deleteWorks(int $canonId, array $matchKeys): void
+    {
+        if ($matchKeys === []) {
+            return;
+        }
+
+        $placeholders = implode(',', array_fill(0, count($matchKeys), '?'));
+        $this->pdo->prepare("DELETE FROM work WHERE canon_id = ? AND match_key IN ({$placeholders})")
+            ->execute([$canonId, ...$matchKeys]);
     }
 
     /** @return array<string, int> "group/code" => tag id */
