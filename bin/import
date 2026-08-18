@@ -1,0 +1,74 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Kanon\Db\Database;
+use Kanon\Import\ChapterTagger;
+use Kanon\Import\CuratedTags;
+use Kanon\Import\DocumentParser;
+use Kanon\Import\EntrySplitter;
+use Kanon\Import\HintTagger;
+use Kanon\Import\Importer;
+
+$options = getopt('', ['dry-run', 'scaffold-tags:', 'year:']);
+$dryRun  = array_key_exists('dry-run', $options);
+$year    = $options['year'] ?? '2025/2026';
+$root    = dirname(__DIR__);
+$config  = require $root . '/config.php';
+$pdo     = Database::connect($config['db']);
+
+$stmt = $pdo->prepare('SELECT id FROM canon WHERE school_year = ?');
+$stmt->execute([$year]);
+$canonId = $stmt->fetchColumn();
+
+if ($canonId === false) {
+    fwrite(STDERR, "No canon for school year {$year}. Run bin/migrate first.\n");
+    exit(1);
+}
+
+$importer = new Importer(
+    $pdo,
+    new DocumentParser(),
+    new EntrySplitter(),
+    new ChapterTagger(),
+    new HintTagger(),
+    new CuratedTags(),
+);
+
+$report = $importer->import(
+    (int) $canonId,
+    $root . '/data/canon-2025-2026.html',
+    $root . '/data/tags-2025-2026.csv',
+    $dryRun,
+);
+
+echo $dryRun ? "DRY RUN - nothing was written\n\n" : "Import applied\n\n";
+foreach ($report->lines() as $line) {
+    echo $line . "\n";
+}
+
+if (isset($options['scaffold-tags'])) {
+    if ($dryRun) {
+        fwrite(STDERR, "\n--scaffold-tags needs a real import; drop --dry-run.\n");
+        exit(1);
+    }
+
+    $path   = (string) $options['scaffold-tags'];
+    $handle = fopen($path, 'wb');
+    if ($handle === false) {
+        fwrite(STDERR, "Cannot write {$path}\n");
+        exit(1);
+    }
+
+    fputcsv($handle, ['work_key', 'author', 'title', 'group', 'code'], ',', '"', '');
+    $rows = $importer->scaffoldRows((int) $canonId);
+    foreach ($rows as $row) {
+        fputcsv($handle, $row, ',', '"', '');
+    }
+    fclose($handle);
+
+    echo "\nscaffold rows written  " . count($rows) . " -> {$path}\n";
+}
