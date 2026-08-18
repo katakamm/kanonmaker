@@ -1,35 +1,44 @@
 /* Kanonmaker - barevná paleta.
    Toto je jediný soubor v projektu, který smí obsahovat konkrétní barvu.
-   Výměna palety = úprava tohoto souboru, nikde jinde. */
+   Výměna palety = úprava tohoto souboru, nikde jinde.
+
+   Základ zadala Kata: pozadí #FFFBCA, text #2D120D a šest barev pro značky.
+   Odvozené odstíny (--line, --ink-soft, --ok*, --warn*) vznikly smícháním
+   těchto barev s pozadím tak, aby každá kombinace textu a podkladu měla
+   kontrast alespoň 4.5:1. Konkrétní naměřené hodnoty jsou v komentářích. */
 :root {
-    --bg:            #FBF6E9;
-    --bg-raised:     #FFFDF7;
-    --ink:           #453D2E;
-    --ink-soft:      #7A7059;
-    --line:          #E6DDC7;
+    --bg:            #FFFBCA;   /* zadané pozadí */
+    --bg-raised:     #FFFDE7;   /* karty a lišty - o něco světlejší než pozadí */
+    --ink:           #2D120D;   /* zadaný text; na pozadí 16.5:1 */
+    --ink-soft:      #7D6B55;   /* vedlejší text; 4.8:1 */
+    --line:          #E4DDB1;   /* linky a rámečky */
 
-    --accent:        #5E877B;
+    /* #23617E je jediná ze zadaných barev dost tmavá na tlačítko:
+       bílý text na ní má 6.8:1, na pozadí jako odkaz 6.5:1. */
+    --accent:        #23617E;
     --accent-ink:    #FFFFFF;
-    --accent-soft:   #E4EDE9;
+    --accent-soft:   #E5E9C1;
 
-    --ok:            #4F7A50;
-    --ok-soft:       #DFEDDC;
-    --warn:          #A96A22;
-    --warn-soft:     #F7E7CE;
+    /* Stavy: ztmavená zelená a korálová ze zadané palety. */
+    --ok:            #4E6C54;   /* na pozadí 5.5:1 */
+    --ok-soft:       #DBE8B9;
+    --warn:          #883D35;   /* na pozadí 7.2:1 */
+    --warn-soft:     #F8D6AE;
 
-    --chip-obdobi-bg:    #DCE6F2;
-    --chip-obdobi-ink:   #2F4A6B;
-    --chip-podobdobi-bg: #F2E3DC;
-    --chip-podobdobi-ink:#7A4A32;
-    --chip-narodni-bg:   #DFEDDC;
-    --chip-narodni-ink:  #3B5A34;
-    --chip-forma-bg:     #EFE0EF;
-    --chip-forma-ink:    #5E3A5E;
-    --chip-special-bg:   #F5E6C8;
-    --chip-special-ink:  #6B5220;
+    /* Značky. Pět zadaných barev; text je na všech tmavý (4.8:1 až 10:1). */
+    --chip-obdobi-bg:     #94BEBB;  /* období - tlumená modrozelená */
+    --chip-obdobi-ink:    #2D120D;
+    --chip-podobdobi-bg:  #F2B6A3;  /* literární období - meruňková */
+    --chip-podobdobi-ink: #2D120D;
+    --chip-narodni-bg:    #86BA90;  /* národní literatura - zelená */
+    --chip-narodni-ink:   #2D120D;
+    --chip-forma-bg:      #9E7B9B;  /* literární forma - fialová */
+    --chip-forma-ink:     #2D120D;
+    --chip-special-bg:    #E36559;  /* zvláštní značka - korálová, nejnápadnější */
+    --chip-special-ink:   #2D120D;
 
     --radius:      14px;
     --radius-chip: 999px;
     --tap:         44px;
-    --shadow:      0 1px 2px rgba(69, 61, 46, .06), 0 4px 16px rgba(69, 61, 46, .05);
+    --shadow:      0 1px 2px rgba(45, 18, 13, .07), 0 4px 16px rgba(45, 18, 13, .06);
 }
