@@ -1,1 +1,347 @@
 work_key,author,title,group,code
+1|aischylos|oresteia,AISCHYLOS,Oresteia,narodni,svetova
+1|aischylos|oresteia,AISCHYLOS,Oresteia,forma,drama
+1|aischylos|oresteia,AISCHYLOS,Oresteia,podobdobi,starovek
+1|alighieri-dante|peklo,"ALIGHIERI, Dante",Peklo,narodni,svetova
+1|alighieri-dante|peklo,"ALIGHIERI, Dante",Peklo,forma,poezie
+1|alighieri-dante|peklo,"ALIGHIERI, Dante",Peklo,podobdobi,stredovek
+1|apuleius|promeny-aneb-zlaty-osel,APULEIUS,Proměny aneb Zlatý osel,narodni,svetova
+1|apuleius|promeny-aneb-zlaty-osel,APULEIUS,Proměny aneb Zlatý osel,forma,proza
+1|apuleius|promeny-aneb-zlaty-osel,APULEIUS,Proměny aneb Zlatý osel,podobdobi,starovek
+1|anon|beowulf,,Beowulf,narodni,svetova
+1|anon|beowulf,,Beowulf,podobdobi,stredovek
+1|boccaccio-giovanni|dekameron,"BOCCACCIO, Giovanni",Dekameron,narodni,svetova
+1|boccaccio-giovanni|dekameron,"BOCCACCIO, Giovanni",Dekameron,podobdobi,renesance
+1|bridel-bedrich|co-buh-clovek,"BRIDEL, Bedřich",Co Bůh? Člověk?,narodni,ceska
+1|bridel-bedrich|co-buh-clovek,"BRIDEL, Bedřich",Co Bůh? Člověk?,forma,poezie
+1|bridel-bedrich|co-buh-clovek,"BRIDEL, Bedřich",Co Bůh? Člověk?,podobdobi,baroko
+1|calderon-de-la-barca-pedro|zivot-je-sen,"CALDERÓN DE LA BARCA, Pedro",Život je sen,narodni,svetova
+1|calderon-de-la-barca-pedro|zivot-je-sen,"CALDERÓN DE LA BARCA, Pedro",Život je sen,forma,drama
+1|calderon-de-la-barca-pedro|zivot-je-sen,"CALDERÓN DE LA BARCA, Pedro",Život je sen,podobdobi,baroko
+1|cervantes-miguel-de|dumyslny-rytir-don-quijote-de-la-mancha,"CERVANTES, Miguel de",Důmyslný rytíř Don Quijote de la Mancha,narodni,svetova
+1|cervantes-miguel-de|dumyslny-rytir-don-quijote-de-la-mancha,"CERVANTES, Miguel de",Důmyslný rytíř Don Quijote de la Mancha,forma,proza
+1|cervantes-miguel-de|dumyslny-rytir-don-quijote-de-la-mancha,"CERVANTES, Miguel de",Důmyslný rytíř Don Quijote de la Mancha,podobdobi,renesance
+1|anon|ceska-stredoveka-lyrika,,Česká středověká lyrika,narodni,ceska
+1|anon|ceska-stredoveka-lyrika,,Česká středověká lyrika,forma,poezie
+1|anon|ceska-stredoveka-lyrika,,Česká středověká lyrika,podobdobi,stredovek
+1|defoe-daniel|robinson-crusoe,"DEFOE, Daniel",Robinson Crusoe,narodni,svetova
+1|defoe-daniel|robinson-crusoe,"DEFOE, Daniel",Robinson Crusoe,forma,proza
+1|defoe-daniel|robinson-crusoe,"DEFOE, Daniel",Robinson Crusoe,podobdobi,klasicismus
+1|diderot-denis|jakub-fatalista,"DIDEROT, Denis",Jakub fatalista,narodni,svetova
+1|diderot-denis|jakub-fatalista,"DIDEROT, Denis",Jakub fatalista,forma,proza
+1|diderot-denis|jakub-fatalista,"DIDEROT, Denis",Jakub fatalista,podobdobi,klasicismus
+1|diderot-denis|jeptiska,"DIDEROT, Denis",Jeptiška,narodni,svetova
+1|diderot-denis|jeptiska,"DIDEROT, Denis",Jeptiška,forma,proza
+1|diderot-denis|jeptiska,"DIDEROT, Denis",Jeptiška,podobdobi,klasicismus
+1|anon|edda,,Edda,narodni,svetova
+1|anon|edda,,Edda,podobdobi,stredovek
+1|anon|epos-o-gilgamesovi,,Epos o Gilgamešovi,narodni,svetova
+1|anon|epos-o-gilgamesovi,,Epos o Gilgamešovi,podobdobi,starovek
+1|euripides|medeia,EURÍPIDÉS,Médeia,narodni,svetova
+1|euripides|medeia,EURÍPIDÉS,Médeia,forma,drama
+1|euripides|medeia,EURÍPIDÉS,Médeia,podobdobi,starovek
+1|goldoni-carlo|poprask-na-lagune,"GOLDONI, Carlo",Poprask na laguně,narodni,svetova
+1|goldoni-carlo|poprask-na-lagune,"GOLDONI, Carlo",Poprask na laguně,forma,drama
+1|goldoni-carlo|poprask-na-lagune,"GOLDONI, Carlo",Poprask na laguně,podobdobi,klasicismus
+1|grimmelshausen-hans-jakob-christoffel|dobrodruzny-simplicius-simplicissimus,"GRIMMELSHAUSEN, Hans Jakob Christoffel",Dobrodružný Simplicius Simplicissimus,narodni,svetova
+1|grimmelshausen-hans-jakob-christoffel|dobrodruzny-simplicius-simplicissimus,"GRIMMELSHAUSEN, Hans Jakob Christoffel",Dobrodružný Simplicius Simplicissimus,forma,proza
+1|grimmelshausen-hans-jakob-christoffel|dobrodruzny-simplicius-simplicissimus,"GRIMMELSHAUSEN, Hans Jakob Christoffel",Dobrodružný Simplicius Simplicissimus,podobdobi,baroko
+1|homer|odysseia,HOMÉR,Odysseia,narodni,svetova
+1|homer|odysseia,HOMÉR,Odysseia,forma,poezie
+1|homer|odysseia,HOMÉR,Odysseia,podobdobi,starovek
+1|homer|ilias,HOMÉR,Ílias,narodni,svetova
+1|homer|ilias,HOMÉR,Ílias,podobdobi,starovek
+1|chaucer-geoffrey|canterburske-povidky,"CHAUCER, Geoffrey",Canterburské povídky,narodni,svetova
+1|chaucer-geoffrey|canterburske-povidky,"CHAUCER, Geoffrey",Canterburské povídky,podobdobi,stredovek
+1|anon|kez-hori-popel-muj,,Kéž hoří popel můj,narodni,ceska
+1|anon|kez-hori-popel-muj,,Kéž hoří popel můj,forma,poezie
+1|anon|kez-hori-popel-muj,,Kéž hoří popel můj,podobdobi,baroko
+1|komensky-jan-amos|labyrint-sveta-a-raj-srdce,"KOMENSKÝ, Jan Amos",Labyrint světa a ráj srdce,narodni,ceska
+1|komensky-jan-amos|labyrint-sveta-a-raj-srdce,"KOMENSKÝ, Jan Amos",Labyrint světa a ráj srdce,forma,proza
+1|komensky-jan-amos|labyrint-sveta-a-raj-srdce,"KOMENSKÝ, Jan Amos",Labyrint světa a ráj srdce,podobdobi,baroko
+1|kosmas|kronika-ceska,KOSMAS,Kronika česká,narodni,ceska
+1|kosmas|kronika-ceska,KOSMAS,Kronika česká,forma,proza
+1|kosmas|kronika-ceska,KOSMAS,Kronika česká,podobdobi,stredovek
+1|anon|kristianova-legenda,,Kristiánova legenda,narodni,ceska
+1|anon|kristianova-legenda,,Kristiánova legenda,forma,proza
+1|anon|kristianova-legenda,,Kristiánova legenda,podobdobi,stredovek
+1|laclos-choderlos-de|nebezpecne-znamosti,"LACLOS, Choderlos de",Nebezpečné známosti,narodni,svetova
+1|laclos-choderlos-de|nebezpecne-znamosti,"LACLOS, Choderlos de",Nebezpečné známosti,forma,proza
+1|laclos-choderlos-de|nebezpecne-znamosti,"LACLOS, Choderlos de",Nebezpečné známosti,podobdobi,klasicismus
+1|anon|legenda-o-svate-katerine,,Legenda o svaté Kateřině,narodni,ceska
+1|anon|legenda-o-svate-katerine,,Legenda o svaté Kateřině,podobdobi,stredovek
+1|malory-thomas|artusova-smrt,"MALORY, Thomas",Artušova smrt,narodni,svetova
+1|malory-thomas|artusova-smrt,"MALORY, Thomas",Artušova smrt,forma,proza
+1|malory-thomas|artusova-smrt,"MALORY, Thomas",Artušova smrt,podobdobi,stredovek
+1|anon|maly-svet-jest-clovek,,Malý svět jest člověk?,narodni,ceska
+1|anon|maly-svet-jest-clovek,,Malý svět jest člověk?,forma,poezie
+1|anon|maly-svet-jest-clovek,,Malý svět jest člověk?,podobdobi,baroko
+1|marlowe-christopher|doctor-faustus,"MARLOWE, Christopher",Doctor Faustus,narodni,svetova
+1|marlowe-christopher|doctor-faustus,"MARLOWE, Christopher",Doctor Faustus,forma,drama
+1|marlowe-christopher|doctor-faustus,"MARLOWE, Christopher",Doctor Faustus,podobdobi,renesance
+1|moliere|misantrop,MOLIÈRE,Misantrop,narodni,svetova
+1|moliere|misantrop,MOLIÈRE,Misantrop,forma,drama
+1|moliere|misantrop,MOLIÈRE,Misantrop,podobdobi,klasicismus
+1|montaigne-michel-de|eseje,"MONTAIGNE, Michel de",Eseje,narodni,svetova
+1|montaigne-michel-de|eseje,"MONTAIGNE, Michel de",Eseje,forma,proza
+1|montaigne-michel-de|eseje,"MONTAIGNE, Michel de",Eseje,podobdobi,renesance
+1|more-thomas|utopia,"MORE, Thomas",Utopia,narodni,svetova
+1|more-thomas|utopia,"MORE, Thomas",Utopia,forma,proza
+1|more-thomas|utopia,"MORE, Thomas",Utopia,podobdobi,renesance
+1|anon|navstiveni-krasy-italska-renesancni-lyrika,,Navštívení krásy. Italská renesanční lyrika,narodni,svetova
+1|anon|navstiveni-krasy-italska-renesancni-lyrika,,Navštívení krásy. Italská renesanční lyrika,forma,poezie
+1|anon|navstiveni-krasy-italska-renesancni-lyrika,,Navštívení krásy. Italská renesanční lyrika,podobdobi,renesance
+1|anon|novy-zakon,,Nový zákon,narodni,svetova
+1|anon|novy-zakon,,Nový zákon,forma,proza
+1|anon|novy-zakon,,Nový zákon,podobdobi,starovek
+1|ovidius-naso-publius|promeny,"OVIDIUS NASO, Publius",Proměny,narodni,svetova
+1|ovidius-naso-publius|promeny,"OVIDIUS NASO, Publius",Proměny,forma,poezie
+1|ovidius-naso-publius|promeny,"OVIDIUS NASO, Publius",Proměny,podobdobi,starovek
+1|petronius|satyrikon,PETRONIUS,Satyrikon,narodni,svetova
+1|petronius|satyrikon,PETRONIUS,Satyrikon,forma,proza
+1|petronius|satyrikon,PETRONIUS,Satyrikon,podobdobi,starovek
+1|anon|pisen-o-cidovi,,Píseň o Cidovi,narodni,svetova
+1|anon|pisen-o-cidovi,,Píseň o Cidovi,forma,poezie
+1|anon|pisen-o-cidovi,,Píseň o Cidovi,podobdobi,stredovek
+1|anon|pisen-o-nibelunzich,,Píseň o Nibelunzích,narodni,svetova
+1|anon|pisen-o-nibelunzich,,Píseň o Nibelunzích,forma,poezie
+1|anon|pisen-o-nibelunzich,,Píseň o Nibelunzích,podobdobi,stredovek
+1|anon|pisen-o-rolandovi,,Píseň o Rolandovi,narodni,svetova
+1|anon|pisen-o-rolandovi,,Píseň o Rolandovi,forma,poezie
+1|anon|pisen-o-rolandovi,,Píseň o Rolandovi,podobdobi,stredovek
+1|polo-marco|milion,"POLO, Marco",Milion,narodni,svetova
+1|polo-marco|milion,"POLO, Marco",Milion,forma,proza
+1|polo-marco|milion,"POLO, Marco",Milion,podobdobi,stredovek
+1|anon|putovani-za-svatym-gralem,,Putování za svatým grálem,narodni,svetova
+1|anon|putovani-za-svatym-gralem,,Putování za svatým grálem,forma,proza
+1|anon|putovani-za-svatym-gralem,,Putování za svatým grálem,podobdobi,stredovek
+1|rabelais-francois|zivot-gargantuuv-a-zivot-pantagrueluv,"RABELAIS, Francois",Život Gargantuův a život Pantagruelův,narodni,svetova
+1|rabelais-francois|zivot-gargantuuv-a-zivot-pantagrueluv,"RABELAIS, Francois",Život Gargantuův a život Pantagruelův,forma,proza
+1|rabelais-francois|zivot-gargantuuv-a-zivot-pantagrueluv,"RABELAIS, Francois",Život Gargantuův a život Pantagruelův,podobdobi,renesance
+1|shakespeare-william|hamlet,"SHAKESPEARE, William",Hamlet,narodni,svetova
+1|shakespeare-william|hamlet,"SHAKESPEARE, William",Hamlet,forma,drama
+1|shakespeare-william|hamlet,"SHAKESPEARE, William",Hamlet,podobdobi,renesance
+1|shakespeare-william|kral-lear,"SHAKESPEARE, William",Král Lear,narodni,svetova
+1|shakespeare-william|kral-lear,"SHAKESPEARE, William",Král Lear,forma,drama
+1|shakespeare-william|kral-lear,"SHAKESPEARE, William",Král Lear,podobdobi,renesance
+1|shakespeare-william|macbeth,"SHAKESPEARE, William",Macbeth,narodni,svetova
+1|shakespeare-william|macbeth,"SHAKESPEARE, William",Macbeth,forma,drama
+1|shakespeare-william|macbeth,"SHAKESPEARE, William",Macbeth,podobdobi,renesance
+1|shakespeare-william|romeo-a-julie,"SHAKESPEARE, William",Romeo a Julie,narodni,svetova
+1|shakespeare-william|romeo-a-julie,"SHAKESPEARE, William",Romeo a Julie,forma,drama
+1|shakespeare-william|romeo-a-julie,"SHAKESPEARE, William",Romeo a Julie,podobdobi,renesance
+1|shakespeare-william|othello,"SHAKESPEARE, William",Othello,narodni,svetova
+1|shakespeare-william|othello,"SHAKESPEARE, William",Othello,forma,drama
+1|shakespeare-william|othello,"SHAKESPEARE, William",Othello,podobdobi,renesance
+1|shakespeare-william|kupec-benatsky,"SHAKESPEARE, William",Kupec benátský,narodni,svetova
+1|shakespeare-william|kupec-benatsky,"SHAKESPEARE, William",Kupec benátský,forma,drama
+1|shakespeare-william|kupec-benatsky,"SHAKESPEARE, William",Kupec benátský,podobdobi,renesance
+1|shakespeare-william|sen-noci-svatojanske,"SHAKESPEARE, William",Sen noci svatojánské,narodni,svetova
+1|shakespeare-william|sen-noci-svatojanske,"SHAKESPEARE, William",Sen noci svatojánské,forma,drama
+1|shakespeare-william|sen-noci-svatojanske,"SHAKESPEARE, William",Sen noci svatojánské,podobdobi,renesance
+1|shakespeare-william|zkroceni-zle-zeny,"SHAKESPEARE, William",Zkrocení zlé ženy,narodni,svetova
+1|shakespeare-william|zkroceni-zle-zeny,"SHAKESPEARE, William",Zkrocení zlé ženy,forma,drama
+1|shakespeare-william|zkroceni-zle-zeny,"SHAKESPEARE, William",Zkrocení zlé ženy,podobdobi,renesance
+1|shakespeare-william|boure,"SHAKESPEARE, William",Bouře,narodni,svetova
+1|shakespeare-william|boure,"SHAKESPEARE, William",Bouře,forma,drama
+1|shakespeare-william|boure,"SHAKESPEARE, William",Bouře,podobdobi,renesance
+1|shakespeare-william|sonety,"SHAKESPEARE, William",Sonety,narodni,svetova
+1|shakespeare-william|sonety,"SHAKESPEARE, William",Sonety,forma,poezie
+1|shakespeare-william|sonety,"SHAKESPEARE, William",Sonety,podobdobi,renesance
+1|anon|sir-gawain-a-zeleny-rytir,,Sir Gawain a Zelený rytíř,narodni,svetova
+1|anon|sir-gawain-a-zeleny-rytir,,Sir Gawain a Zelený rytíř,forma,poezie
+1|anon|sir-gawain-a-zeleny-rytir,,Sir Gawain a Zelený rytíř,podobdobi,stredovek
+1|anon|smich-stare-francie-soubor-stredovekych-fabliaux,,Smích staré Francie. Soubor středověkých fabliaux,narodni,svetova
+1|anon|smich-stare-francie-soubor-stredovekych-fabliaux,,Smích staré Francie. Soubor středověkých fabliaux,forma,poezie
+1|anon|smich-stare-francie-soubor-stredovekych-fabliaux,,Smích staré Francie. Soubor středověkých fabliaux,podobdobi,stredovek
+1|sofokles|kral-oidipus,SOFOKLES,Král Oidipus,narodni,svetova
+1|sofokles|kral-oidipus,SOFOKLES,Král Oidipus,forma,drama
+1|sofokles|kral-oidipus,SOFOKLES,Král Oidipus,podobdobi,starovek
+1|sofokles|antigona,SOFOKLES,Antigona,narodni,svetova
+1|sofokles|antigona,SOFOKLES,Antigona,forma,drama
+1|sofokles|antigona,SOFOKLES,Antigona,podobdobi,starovek
+1|sofokles|elektra,SOFOKLES,Elektra,narodni,svetova
+1|sofokles|elektra,SOFOKLES,Elektra,forma,drama
+1|sofokles|elektra,SOFOKLES,Elektra,podobdobi,starovek
+1|anon|stary-zakon,,Starý zákon,narodni,svetova
+1|anon|stary-zakon,,Starý zákon,forma,proza
+1|anon|stary-zakon,,Starý zákon,podobdobi,starovek
+1|sterne-laurence|zivot-a-nazory-blahorodeho-pana-tristrama-shandyho,"STERNE, Laurence",Život a názory blahorodého pana Tristrama Shandyho,narodni,svetova
+1|sterne-laurence|zivot-a-nazory-blahorodeho-pana-tristrama-shandyho,"STERNE, Laurence",Život a názory blahorodého pana Tristrama Shandyho,forma,proza
+1|sterne-laurence|zivot-a-nazory-blahorodeho-pana-tristrama-shandyho,"STERNE, Laurence",Život a názory blahorodého pana Tristrama Shandyho,podobdobi,klasicismus
+1|swift-jonathan|gulliverovy-cesty,"SWIFT, Jonathan",Gulliverovy cesty,narodni,svetova
+1|swift-jonathan|gulliverovy-cesty,"SWIFT, Jonathan",Gulliverovy cesty,forma,proza
+1|swift-jonathan|gulliverovy-cesty,"SWIFT, Jonathan",Gulliverovy cesty,podobdobi,klasicismus
+1|vaclav-vratislav-z-mitrovic|prihody-vaclava-vratislava-z-mitrovic,VÁCLAV VRATISLAV Z MITROVIC,Příhody Václava Vratislava z Mitrovic,narodni,ceska
+1|vaclav-vratislav-z-mitrovic|prihody-vaclava-vratislava-z-mitrovic,VÁCLAV VRATISLAV Z MITROVIC,Příhody Václava Vratislava z Mitrovic,forma,proza
+1|vaclav-vratislav-z-mitrovic|prihody-vaclava-vratislava-z-mitrovic,VÁCLAV VRATISLAV Z MITROVIC,Příhody Václava Vratislava z Mitrovic,podobdobi,baroko
+1|vergilius|aeneis,VERGILIUS,Aeneis,narodni,svetova
+1|vergilius|aeneis,VERGILIUS,Aeneis,podobdobi,starovek
+1|villon-francois|basne,"VILLON, Francois",Básně,narodni,svetova
+1|villon-francois|basne,"VILLON, Francois",Básně,forma,poezie
+1|villon-francois|basne,"VILLON, Francois",Básně,podobdobi,stredovek
+1|anon|vita-caroli,,Vita Caroli,narodni,ceska
+1|anon|vita-caroli,,Vita Caroli,forma,proza
+1|anon|vita-caroli,,Vita Caroli,podobdobi,stredovek
+1|voltaire|candide,VOLTAIRE,Candide,narodni,svetova
+1|voltaire|candide,VOLTAIRE,Candide,forma,proza
+1|voltaire|candide,VOLTAIRE,Candide,podobdobi,klasicismus
+1|de-voragine-jacobus|legenda-aurea,"de VORAGINE, Jacobus",Legenda aurea,narodni,svetova
+1|de-voragine-jacobus|legenda-aurea,"de VORAGINE, Jacobus",Legenda aurea,forma,proza
+1|de-voragine-jacobus|legenda-aurea,"de VORAGINE, Jacobus",Legenda aurea,podobdobi,stredovek
+2|austenova-jane|pycha-a-predsudek,"AUSTENOVÁ, Jane",Pýcha a předsudek,forma,proza
+2|balzac-honore-de|otec-goriot,"BALZAC, Honoré de",Otec Goriot,forma,proza
+2|baudelaire-charles|kvety-zla,"BAUDELAIRE, Charles",Květy zla,forma,poezie
+2|bronteova-emily|na-vetrne-hurce,"BRONTËOVÁ, Emily",Na Větrné hůrce,forma,proza
+2|coleridge-samuel|pisen-o-starem-namornikovi,"COLERIDGE, Samuel",Píseň o starém námořníkovi,forma,poezie
+2|cechov-anton-pavlovic|visnovy-sad,"ČECHOV, Anton Pavlovič",Višňový sad,forma,drama
+2|cechov-anton-pavlovic|racek,"ČECHOV, Anton Pavlovič",Racek,forma,drama
+2|cechov-anton-pavlovic|tri-sestry,"ČECHOV, Anton Pavlovič",Tři sestry,forma,drama
+2|dickens-charles|nadejne-vyhlidky,"DICKENS, Charles",Nadějné vyhlídky,forma,proza
+2|dickens-charles|david-copperfield,"DICKENS, Charles",David Copperfield,forma,proza
+2|dickinsonova-emily|a-basnikem-byt-nechci,"DICKINSONOVÁ, Emily",A básníkem být nechci,forma,poezie
+2|dostojevskij-fjodor-m|zlocin-a-trest,"DOSTOJEVSKIJ, Fjodor M.",Zločin a trest,forma,proza
+2|dostojevskij-fjodor-m|bratri-karamazovi,"DOSTOJEVSKIJ, Fjodor M.",Bratři Karamazovi,forma,proza
+2|dostojevskij-fjodor-m|idiot,"DOSTOJEVSKIJ, Fjodor M.",Idiot,forma,proza
+2|dostojevskij-fjodor-m|besi,"DOSTOJEVSKIJ, Fjodor M.",Běsi,forma,proza
+2|flaubert-gustave|pani-bovaryova,"FLAUBERT, Gustave",Paní Bovaryová,forma,proza
+2|goethe-johann-wolfgang|utrpeni-mladeho-werthera,"GOETHE, Johann Wolfgang",Utrpení mladého Werthera,forma,proza
+2|gogol-nikolaj-vasiljevic|revizor,"GOGOL, Nikolaj Vasiljevič",Revizor,forma,drama
+2|hawthorne-nathaniel|sarlatove-pismeno,"HAWTHORNE, Nathaniel",Šarlatové písmeno,forma,proza
+2|hoffmann-e-t-a|dabluv-elixir,"HOFFMANN, E. T. A.",Ďáblův elixír,forma,proza
+2|hugo-victor|chram-matky-bozi-v-parizi,"HUGO, Victor",Chrám Matky Boží v Paříži,forma,proza
+2|hugo-victor|bidnici,"HUGO, Victor",Bídníci,forma,proza
+2|huysmans-joris-karl|naruby,"HUYSMANS, Joris Karl",Naruby,forma,proza
+2|ibsen-henrik|nora,"IBSEN, Henrik",Nora,forma,drama
+2|ibsen-henrik|divoka-kachna,"IBSEN, Henrik",Divoká kachna,forma,drama
+2|lermontov-michail-jurjevic|hrdina-nasi-doby,"LERMONTOV, Michail Jurjevič",Hrdina naší doby,forma,proza
+2|lermontov-michail-jurjevic|demon,"LERMONTOV, Michail Jurjevič",Démon,forma,poezie
+2|maupassant-guy-de|milacek,"MAUPASSANT, Guy de",Miláček,forma,proza
+2|maupassant-guy-de|dabel-a-jine-povidky,"MAUPASSANT, Guy de",Ďábel a jiné povídky,forma,proza
+2|melville-herman|bila-velryba,"MELVILLE, Herman",Bílá velryba,forma,proza
+2|nietzsche-friedrich|tak-pravil-zarathustra,"NIETZSCHE, Friedrich",Tak pravil Zarathustra,forma,proza
+2|puskin-alexandr-sergejevic|medeny-jezdec,"PUŠKIN, Alexandr Sergejevič",Měděný jezdec,forma,poezie
+2|rimbaud-arthur|sezona-v-pekle-iluminace-dopisy-vidouciho,"RIMBAUD, Arthur",Sezóna v pekle + Iluminace + Dopisy vidoucího,forma,poezie
+2|shelley-percy-bysshe|odpoutany-prometheus,"SHELLEY, Percy Bysshe",Odpoutaný Prométheus,forma,drama
+2|shelleyova-mary|frankenstein,"SHELLEYOVÁ, Mary",Frankenstein,forma,proza
+2|stendhal|cerveny-a-cerny,STENDHAL,Červený a černý,forma,proza
+2|stoker-bram|dracula,"STOKER, Bram",Dracula,forma,proza
+2|tolstoj-lev-nikolajevic|anna-karenina,"TOLSTOJ, Lev Nikolajevič",Anna Karenina,forma,proza
+2|verlaine-paul|slova-na-strunach,"VERLAINE, Paul",Slova na strunách,forma,poezie
+2|whitman-walt|stebla-travy,"WHITMAN, Walt",Stébla trávy,forma,poezie
+2|wilde-oscar|obraz-doriana-graye,"WILDE, Oscar",Obraz Doriana Graye,forma,proza
+2|zola-emile|zabijak,"ZOLA, Émile",Zabiják,forma,proza
+3|arbes-jakub|romaneta,"ARBES, Jakub",Romaneta,forma,proza
+3|capek-chod-karel-matej|kaspar-len-mstitel,"ČAPEK CHOD, Karel Matěj",Kašpar Lén mstitel,forma,proza
+3|havlicek-borovsky-karel|velke-satiry,"HAVLÍČEK BOROVSKÝ, Karel",Velké satiry,forma,poezie
+3|hlavacek-karel|hral-kdosi-na-hoboj,"HLAVÁČEK, Karel",Hrál kdosi na hoboj,forma,poezie
+3|jirasek-alois|temno,"JIRÁSEK, Alois",Temno,forma,proza
+3|karasek-ze-lvovic-jiri|goticka-duse,"KARÁSEK ZE LVOVIC, Jiří",Gotická duše,forma,proza
+3|kollar-jan|slavy-dcera,"KOLLÁR, Ján",Slávy dcera,forma,poezie
+3|macha-karel-hynek|maj,"MÁCHA, Karel Hynek",Máj,forma,poezie
+3|macha-karel-hynek|pout-krkonosska-vecer-na-bezdezu,"MÁCHA, Karel Hynek",Pouť krkonošská + Večer na Bezdězu,forma,proza
+3|mrstikove-alois-a-vilem|marysa,"MRŠTÍKOVÉ, Alois a Vilém",Maryša,forma,drama
+3|nemcova-bozena|babicka,"NĚMCOVÁ, Božena",Babička,forma,proza
+3|rais-karel-vaclav|kalibuv-zlocin,"RAIS, Karel Václav",Kalibův zločin,forma,proza
+3|anon|rukopisy-kralovedvorsky-a-zelenohorsky,,Rukopisy královédvorský a zelenohorský,forma,poezie
+3|winter-zikmund|mistr-kampanus,"WINTER, Zikmund",Mistr Kampanus,forma,proza
+3|zeyer-julius|tri-legendy-o-krucifixu,"ZEYER, Julius",Tři legendy o krucifixu,forma,proza
+4|albee-edward|kdo-se-boji-virginie-woolfove,"ALBEE, Edward",Kdo se bojí Virginie Woolfové,narodni,svetova
+4|beckett-samuel|cekani-na-godota,"BECKETT, Samuel",Čekání na Godota,narodni,svetova
+4|bernhard-thomas|namesti-hrdinu,"BERNHARD, Thomas",Náměstí hrdinů,narodni,svetova
+4|capek-karel|r-u-r,"ČAPEK, Karel",R.U.R.,narodni,ceska
+4|durrenmatt-friedrich|navsteva-stare-damy,"DÜRRENMATT, Friedrich",Návštěva staré dámy,narodni,svetova
+4|havel-vaclav|zahradni-slavnost,"HAVEL, Václav",Zahradní slavnost,narodni,ceska
+4|havel-vaclav|ztizena-moznost-soustredeni,"HAVEL, Václav",Ztížená možnost soustředění,narodni,ceska
+4|havel-vaclav|tzv-vankovky,"HAVEL, Václav",tzv. vaňkovky,narodni,ceska
+4|havel-vaclav|odchazeni,"HAVEL, Václav",Odcházení,narodni,ceska
+4|havel-vaclav|pokouseni,"HAVEL, Václav",Pokoušení,narodni,ceska
+4|ionesco-eugene|zidle,"IONESCO, Eugène",Židle,narodni,svetova
+4|ionesco-eugene|plesata-zpevacka,"IONESCO, Eugène",Plešatá zpěvačka,narodni,svetova
+4|jarry-alfred|ubu-kralem,"JARRY, Alfred",Ubu králem,narodni,svetova
+4|langer-frantisek|periferie,"LANGER, František",Periferie,narodni,ceska
+4|o-neill-eugene|cesta-dlouhym-dnem-do-noci,"O'NEILL, Eugene",Cesta dlouhým dnem do noci,narodni,svetova
+4|pirandello-luigi|sest-postav-hleda-autora,"PIRANDELLO, Luigi",Šest postav hledá autora,narodni,svetova
+4|sartre-jean-paul|mouchy,"SARTRE, Jean-Paul",Mouchy,narodni,svetova
+4|sartre-jean-paul|s-vyloucenim-verejnosti,"SARTRE, Jean-Paul",S vyloučením veřejnosti,narodni,svetova
+4|strindberg-august|slecna-julie,"STRINDBERG, August",Slečna Julie,narodni,svetova
+4|topol-josef|konec-masopustu,"TOPOL, Josef",Konec masopustu,narodni,ceska
+4|williams-tennessee|tramvaj-do-stanice-touha,"WILLIAMS, Tennessee",Tramvaj do stanice Touha,narodni,svetova
+4|zelenka-petr|pribehy-obycejneho-silenstvi,"ZELENKA, Petr",Příběhy obyčejného šílenství,narodni,ceska
+5|apollinaire-guillaume|alkoholy,"APOLLINAIRE, Guillaume",Alkoholy,narodni,svetova
+5|antosova-svatava|diktator-pise-basen,"ANTOŠOVÁ, Svatava",Diktátor píše báseň,narodni,ceska
+5|bezruc-petr|slezske-pisne,"BEZRUČ, Petr",Slezské písně,narodni,ceska
+5|biebl-konstantin|s-lodi-jez-dovazi-caj-a-kavu,"BIEBL, Konstantin","S lodí, jež dováží čaj a kávu",narodni,ceska
+5|blatny-ivan|melancholicke-prochazky,"BLATNÝ, Ivan",Melancholické procházky,narodni,ceska
+5|borkovec-petr|polni-prace,"BORKOVEC, Petr",Polní práce,narodni,ceska
+5|borkovec-petr|herbar-k-cemusi-horsimu,"BORKOVEC, Petr",Herbář k čemusi horšímu,narodni,ceska
+5|celan-paul|snezny-part,"CELAN, Paul",Sněžný part,narodni,svetova
+5|cvetajeva-marina|pogrom-zivota,"CVETAJEVA, Marina",Pogrom života,narodni,svetova
+5|anon|drzice-v-drzych-drzkach-cigarety-mala-antologie-poezie-nemeckeho-expresionismu,,Držíce v drzých držkách cigarety. Malá antologie poezie německého expresionismu,narodni,svetova
+5|dezinsky-milan|slovnik-noci,"DĚŽINSKÝ, Milan",Slovník noci,narodni,ceska
+5|dolezal-milos|jana-bude-brzy-sbirat-lipovy-kvet,"DOLEŽAL, Miloš",Jana bude brzy sbírat lipový květ,narodni,ceska
+5|eliot-thomas-stearns|pusta-zeme,"ELIOT, Thomas Stearns",Pustá země,narodni,svetova
+5|fischerova-sylva|svetovy-orloj,"FISCHEROVÁ, Sylva",Světový orloj,narodni,ceska
+5|gellner-frantisek|po-nas-at-prijde-potopa,"GELLNER, František",Po nás ať přijde potopa!,narodni,ceska
+5|ginsberg-allen|kvileni-a-jine-basne,"GINSBERG, Allen",Kvílení a jiné básně,narodni,svetova
+5|grogrova-bohumila|rukopis,"GRÖGROVÁ, Bohumila",Rukopis,narodni,ceska
+5|halas-frantisek|kohout-plasi-smrt,"HALAS, František",Kohout plaší smrt,narodni,ceska
+5|hejda-zbynek|valse-melancolique,"HEJDA, Zbyněk",Valse melancolique,narodni,ceska
+5|holan-vladimir|bolest,"HOLAN, Vladimír",Bolest,narodni,ceska
+5|holan-vladimir|noc-s-hamletem,"HOLAN, Vladimír",Noc s Hamletem,narodni,ceska
+5|hrabe-vaclav|blues-pro-blaznivou-holku,"HRABĚ, Václav",Blues pro bláznivou holku,narodni,ceska
+5|hruska-petr|darmata,"HRUŠKA, Petr",Darmata,narodni,ceska
+5|hruska-petr|spatril-jsem-svou-tvar,"HRUŠKA, Petr",Spatřil jsem svou tvář,narodni,ceska
+5|jirous-ivan-martin|magorovy-labuti-pisne,"JIROUS, Ivan Martin",Magorovy labutí písně,narodni,ceska
+5|jirous-ivan-martin|okuje,"JIROUS, Ivan Martin",Okuje,narodni,ceska
+5|kainar-josef|nove-myty,"KAINAR, Josef",Nové mýty,narodni,ceska
+5|kolar-jiri|prometheova-jatra,"KOLÁŘ, Jiří",Prométheova játra,narodni,ceska
+5|kolmacka-pavel|more,"KOLMAČKA, Pavel",Moře,narodni,ceska
+5|krchovsky-jiri|basne,"KRCHOVSKÝ, Jiří",Básně,narodni,ceska
+5|morgenstern-christian|sibenicni-pisne,"MORGENSTERN, Christian",Šibeniční písně,narodni,svetova
+5|nezval-vitezslav|basne-noci,"NEZVAL, Vítězslav",Básně noci,narodni,ceska
+5|nezval-vitezslav|zena-v-mnoznem-cisle,"NEZVAL, Vítězslav",Žena v množném čísle,narodni,ceska
+5|novotny-pavel|dedek,"NOVOTNÝ, Pavel",Dědek,narodni,ceska
+5|orten-jiri|knihy-versu,"ORTEN, Jiří",Knihy veršů,narodni,ceska
+5|anon|podivuhodni-kouzelnici-citanka-ceskeho-stalinismu-v-reci-vazane-z-let-1945-55,,Podivuhodní kouzelníci. Čítanka českého stalinismu v řeči vázané z let 1945–55,narodni,ceska
+5|reynek-bohuslav|rty-a-zuby,"REYNEK, Bohuslav",Rty a zuby,narodni,ceska
+5|seifert-jaroslav|na-vlnach-tsf,"SEIFERT, Jaroslav",Na vlnách TSF,narodni,ceska
+5|seifert-jaroslav|morovy-sloup,"SEIFERT, Jaroslav",Morový sloup,narodni,ceska
+5|skacel-jan|co-zbylo-z-andela,"SKÁCEL, Jan",Co zbylo z anděla,narodni,ceska
+5|skacel-jan|kdo-pije-potme-vino,"SKÁCEL, Jan",Kdo pije potmě víno,narodni,ceska
+5|stancakova-alzbeta|cacak,"STANČÁKOVÁ, Alžběta",Čačak,narodni,ceska
+5|siktanc-karel|tanec-smrti,"ŠIKTANC, Karel",Tanec smrti,narodni,ceska
+5|topol-jachym|miluju-te-k-zblazneni,"TOPOL, Jáchym",Miluju tě k zbláznění,narodni,ceska
+5|wernisch-ivan|zimohradek,"WERNISCH, Ivan",Zimohrádek,narodni,ceska
+5|wernisch-ivan|zapadlo-slunce-za-dnem,"WERNISCH, Ivan",Zapadlo slunce za dnem,narodni,ceska
+5|wolker-jiri|tezka-hodina,"WOLKER, Jiří",Těžká hodina,narodni,ceska
+5|zahradnicek-jan|jeraby,"ZAHRADNÍČEK, Jan",Jeřáby,narodni,ceska
+5|zahradnicek-jan|znameni-moci,"ZAHRADNÍČEK, Jan",Znamení moci,narodni,ceska
+5|antosova-svatava|diktator-pise-basen,"ANTOŠOVÁ, Svatava",Diktátor píše báseň,special,ceska_poezie_po_1950
+5|borkovec-petr|polni-prace,"BORKOVEC, Petr",Polní práce,special,ceska_poezie_po_1950
+5|borkovec-petr|herbar-k-cemusi-horsimu,"BORKOVEC, Petr",Herbář k čemusi horšímu,special,ceska_poezie_po_1950
+5|dezinsky-milan|slovnik-noci,"DĚŽINSKÝ, Milan",Slovník noci,special,ceska_poezie_po_1950
+5|dolezal-milos|jana-bude-brzy-sbirat-lipovy-kvet,"DOLEŽAL, Miloš",Jana bude brzy sbírat lipový květ,special,ceska_poezie_po_1950
+5|fischerova-sylva|svetovy-orloj,"FISCHEROVÁ, Sylva",Světový orloj,special,ceska_poezie_po_1950
+5|grogrova-bohumila|rukopis,"GRÖGROVÁ, Bohumila",Rukopis,special,ceska_poezie_po_1950
+5|hejda-zbynek|valse-melancolique,"HEJDA, Zbyněk",Valse melancolique,special,ceska_poezie_po_1950
+5|holan-vladimir|bolest,"HOLAN, Vladimír",Bolest,special,ceska_poezie_po_1950
+5|holan-vladimir|noc-s-hamletem,"HOLAN, Vladimír",Noc s Hamletem,special,ceska_poezie_po_1950
+5|hrabe-vaclav|blues-pro-blaznivou-holku,"HRABĚ, Václav",Blues pro bláznivou holku,special,ceska_poezie_po_1950
+5|hruska-petr|darmata,"HRUŠKA, Petr",Darmata,special,ceska_poezie_po_1950
+5|hruska-petr|spatril-jsem-svou-tvar,"HRUŠKA, Petr",Spatřil jsem svou tvář,special,ceska_poezie_po_1950
+5|jirous-ivan-martin|magorovy-labuti-pisne,"JIROUS, Ivan Martin",Magorovy labutí písně,special,ceska_poezie_po_1950
+5|jirous-ivan-martin|okuje,"JIROUS, Ivan Martin",Okuje,special,ceska_poezie_po_1950
+5|kolar-jiri|prometheova-jatra,"KOLÁŘ, Jiří",Prométheova játra,special,ceska_poezie_po_1950
+5|kolmacka-pavel|more,"KOLMAČKA, Pavel",Moře,special,ceska_poezie_po_1950
+5|krchovsky-jiri|basne,"KRCHOVSKÝ, Jiří",Básně,special,ceska_poezie_po_1950
+5|novotny-pavel|dedek,"NOVOTNÝ, Pavel",Dědek,special,ceska_poezie_po_1950
+5|seifert-jaroslav|morovy-sloup,"SEIFERT, Jaroslav",Morový sloup,special,ceska_poezie_po_1950
+5|skacel-jan|co-zbylo-z-andela,"SKÁCEL, Jan",Co zbylo z anděla,special,ceska_poezie_po_1950
+5|skacel-jan|kdo-pije-potme-vino,"SKÁCEL, Jan",Kdo pije potmě víno,special,ceska_poezie_po_1950
+5|stancakova-alzbeta|cacak,"STANČÁKOVÁ, Alžběta",Čačak,special,ceska_poezie_po_1950
+5|siktanc-karel|tanec-smrti,"ŠIKTANC, Karel",Tanec smrti,special,ceska_poezie_po_1950
+5|topol-jachym|miluju-te-k-zblazneni,"TOPOL, Jáchym",Miluju tě k zbláznění,special,ceska_poezie_po_1950
+5|wernisch-ivan|zimohradek,"WERNISCH, Ivan",Zimohrádek,special,ceska_poezie_po_1950
+5|wernisch-ivan|zapadlo-slunce-za-dnem,"WERNISCH, Ivan",Zapadlo slunce za dnem,special,ceska_poezie_po_1950
+5|zahradnicek-jan|znameni-moci,"ZAHRADNÍČEK, Jan",Znamení moci,special,ceska_poezie_po_1950
