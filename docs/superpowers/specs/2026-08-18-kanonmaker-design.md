@@ -56,9 +56,12 @@ Two hostnames, both resolving to the internal address 192.168.100.173:
 | `kata.doma.slimak.cz` | student application |
 | `kata-admin.doma.slimak.cz` | administration, `role = admin` only |
 
-Deployment to a production server is deferred until the owner asks for it. At
-that point: Let's Encrypt certificates, DNS moved to the public address, and an
-IP restriction on the administration host in addition to its login.
+Deployment to production happens on the owner's instruction, given as "put to
+production". Production is existing managed hosting at `kata.slimak.cz` and
+`kata-admin.slimak.cz`, already holding its own certificates, so no DNS or
+certificate work falls to this project. The procedure, paths and credentials are
+documented in `~/CLAUDE.md`, which is authoritative and must be read at
+deployment time rather than reproduced here.
 
 ## 4. The source document
 
@@ -339,22 +342,43 @@ and must be done carefully.
 
 ```
 /data/www/kanonmaker/
-├── public/index.php        docroot: kata.doma.slimak.cz
-├── admin/index.php         docroot: kata-admin.doma.slimak.cz
+├── public/                 docroot: kata.doma.slimak.cz  → production www/
+│   ├── index.php
+│   └── assets/tokens.css
+├── admin/                  docroot: kata-admin.doma.slimak.cz → production admin/
+│   └── index.php
 ├── src/                    router, models, rules engine, importer
 ├── templates/
-├── assets/tokens.css
 ├── data/                   canon snapshot, curated tags CSV
 ├── db/migrations/          numbered .sql, applied by bin/migrate
 ├── bin/                    import, migrate, create-admin, backup
 └── tests/
 ```
 
+Only `public/` and `admin/` are ever web-served. Everything else — `src/`,
+`templates/`, `data/`, `db/`, `bin/`, `vendor/` and the configuration — must sit
+outside the document roots, because in production anything inside them can be
+downloaded from the internet.
+
+A front controller therefore must not assume the application root is its own
+parent directory. Each reads an optional `approot.php` sitting beside it:
+
+```php
+$appRoot = is_file(__DIR__ . '/approot.php')
+    ? (string) require __DIR__ . '/approot.php'
+    : dirname(__DIR__);
+```
+
+In development the fallback applies and nothing extra exists. In production the
+deployment writes an `approot.php` returning the directory one level above the
+document roots. This needs no server configuration, which matters because we
+have none.
+
 ### Infrastructure
 
-Following the conventions already used on this server: host and container paths
-are mapped identically, so deployment to production remains an `rsync` of the
-same path.
+Development follows the conventions already used on this server, with host and
+container paths mapped identically so that no path translation is needed while
+working.
 
 - `kanon-www` — image `slimakcz/images:php83_2026_default`, `127.0.0.1:9058`.
 - `kanon-db` — image `mariadb:10.11`, `127.0.0.1:3309`, named volume.
@@ -365,6 +389,29 @@ same path.
 `vendor/` and `config.local.php`, which holds the database password, stay out of
 the repository. The canon snapshot and the curated tag file belong in it: they
 are the inputs the import is reproducible from.
+
+### Deployment to production
+
+Production is a restricted shared-hosting container reached over SSH on port
+8053. It has no root, no sudo, no Docker, and nothing on it can be installed or
+restarted. Three consequences shape the build:
+
+- **`rsync` is not available.** Whole directories go over as `tar` piped through
+  SSH, single files over `scp`. `tar` overwrites but never deletes, so a file
+  removed from the project lingers in production until it is deleted by hand.
+- **Composer cannot be assumed on the far end**, so `vendor/` is shipped as part
+  of the deployment rather than installed there. It stays out of git regardless.
+- **The database is an external MariaDB host**, not a container. Only the
+  connection details in `config.local.php` differ between environments; that file
+  lives above the document roots and is never committed. Migrations are run from
+  the development server, which can reach the production database directly.
+
+PHP's `error_log` is locked by FPM and cannot be overridden, so the application
+includes the site's own error-capturing handler (`chyby.php`) at the top of each
+front controller and reads errors from the site's `tmp/php-error.log`.
+
+The exact hostnames, paths, credentials and commands live in `~/CLAUDE.md` and
+are read at deployment time, not copied into this specification.
 
 ### Security
 
@@ -397,4 +444,5 @@ automated tests.
 
 - The owner will supply the final colour palette as hex codes; until then the
   placeholder palette in `assets/tokens.css` stands.
-- Production deployment happens on the owner's signal, not before.
+- Production deployment happens on the owner's instruction "put to production",
+  following `~/CLAUDE.md`, and not before.

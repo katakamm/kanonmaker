@@ -14,7 +14,9 @@
 
 - PHP `>= 8.3`. Declare `declare(strict_types=1);` at the top of every PHP file.
 - Namespace `Kanon\` maps to `src/`, `Kanon\Tests\` maps to `tests/` (PSR-4).
-- Host and container paths are identical: the project lives at `/data/www/kanonmaker` on both sides, so production deployment stays an `rsync` of the same path.
+- Host and container paths are identical in development: the project lives at `/data/www/kanonmaker` on both sides, so no path translation is needed while working. Production is a different layout entirely — see the spec's "Deployment to production".
+- Only `public/` and `admin/` may ever be web-served. `src/`, `templates/`, `data/`, `db/`, `bin/`, `vendor/` and `config.local.php` must stay outside them, because in production everything inside a document root is downloadable.
+- A front controller resolves the application root as `is_file(__DIR__ . '/approot.php') ? (string) require __DIR__ . '/approot.php' : dirname(__DIR__)`. Never hard-code `dirname(__DIR__)` alone: in production `src/` sits above the document roots and `approot.php` is what points at it.
 - All database tables use `ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`.
 - Composer, PHPUnit and all PHP commands run **inside the container**: `sudo docker exec -w /data/www/kanonmaker kanon-www <command>`. There is no PHP binary on the host.
 - Interface language of the application is Czech. Identifiers, comments and commit messages are English; user-facing strings and tag labels are Czech.
@@ -84,7 +86,8 @@ Create `startup/docker-compose.yaml`:
 ```yaml
 # Kanonmaker - lokalni vyvojove prostredi.
 # Cesty jsou mapovane identicky (host == kontejner), stejne jako u ostatnich
-# projektu na tomto serveru, takze nasazeni na produkci je pouhy rsync.
+# projektu na tomto serveru, takze se nikde neprekladaji cesty.
+# Produkce ma jine rozlozeni a nasazuje se pres tar/ssh - viz ~/CLAUDE.md.
 services:
   kanon-www:
     image: 'slimakcz/images:php83_2026_default'
@@ -141,6 +144,8 @@ Append to `.gitignore`:
 
 ```
 /startup/.env
+/public/approot.php
+/admin/approot.php
 ```
 
 Then create the real file with generated passwords:
@@ -176,6 +181,10 @@ Expected: a table printing `kanonmaker`. If this fails, the container is still i
 
 - [ ] **Step 5: Write the two front controllers**
 
+Both resolve the application root through `approot.php` rather than assuming
+their own parent directory, because in production `src/` lives above the
+document roots.
+
 Create `public/index.php`:
 
 ```php
@@ -183,8 +192,12 @@ Create `public/index.php`:
 
 declare(strict_types=1);
 
+$appRoot = is_file(__DIR__ . '/approot.php')
+    ? (string) require __DIR__ . '/approot.php'
+    : dirname(__DIR__);
+
 header('Content-Type: text/plain; charset=utf-8');
-echo "kanonmaker student ok php=" . PHP_VERSION . "\n";
+echo "kanonmaker student ok php=" . PHP_VERSION . " root={$appRoot}\n";
 ```
 
 Create `admin/index.php`:
@@ -194,8 +207,12 @@ Create `admin/index.php`:
 
 declare(strict_types=1);
 
+$appRoot = is_file(__DIR__ . '/approot.php')
+    ? (string) require __DIR__ . '/approot.php'
+    : dirname(__DIR__);
+
 header('Content-Type: text/plain; charset=utf-8');
-echo "kanonmaker admin ok php=" . PHP_VERSION . "\n";
+echo "kanonmaker admin ok php=" . PHP_VERSION . " root={$appRoot}\n";
 ```
 
 - [ ] **Step 6: Write the Apache configuration**
@@ -270,8 +287,8 @@ curl -s http://kata.doma.slimak.cz/ ; curl -s http://kata-admin.doma.slimak.cz/
 Expected exactly:
 
 ```
-kanonmaker student ok php=8.3.25
-kanonmaker admin ok php=8.3.25
+kanonmaker student ok php=8.3.25 root=/data/www/kanonmaker
+kanonmaker admin ok php=8.3.25 root=/data/www/kanonmaker
 ```
 
 If a host returns the default Apache page, the `ServerName` did not match — check `sudo apache2ctl -S`.
