@@ -45,3 +45,21 @@ cd startup && sudo docker-compose up -d
 
 Celá paleta je v `public/assets/tokens.css`. Nikde jinde v projektu nesmí být
 konkrétní barva — výměna palety je úprava jediného souboru.
+
+## Administrace
+
+`http://kata-admin.doma.slimak.cz/` — jen pro účty s rolí `admin`.
+
+- **Ke kontrole** — potvrzování značek, které doplnil import. Skupiny jsou
+  seřazené podle důležitosti; „Potvrdit všech N“ vyřídí celou skupinu naráz.
+- **Díla** — úprava názvu, poznámky a značek jednoho díla.
+- **Pravidla** — čísla ze školních kritérií. Uložit nejde nic, co by kontrola
+  neuměla vyhodnotit.
+- **Import** — nejdřív nanečisto, pak doopravdy.
+- **Uživatelé** — role a blokování účtů.
+
+Prvního správce založí:
+
+```bash
+sudo docker exec -w /data/www/kanonmaker kanon-www php bin/create-admin <e-mail> <heslo> <jméno>
+```

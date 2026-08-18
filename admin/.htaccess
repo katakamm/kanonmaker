@@ -1,0 +1,12 @@
+# Vše, co není skutečný soubor, obsluhuje jediný vstupní bod.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Statické soubory nepatří do PHP.
+<FilesMatch "\.(css|js|svg|woff2?|png|jpg)$">
+    SetHandler none
+</FilesMatch>
