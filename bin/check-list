@@ -1,0 +1,55 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Kanon\Db\Database;
+use Kanon\Rules\RuleSet;
+use Kanon\Rules\WorkViewLoader;
+
+$options = getopt('', ['year:']);
+$year    = $options['year'] ?? '2025/2026';
+$config  = require __DIR__ . '/../config.php';
+$pdo     = Database::connect($config['db']);
+
+$stmt = $pdo->prepare('SELECT id FROM canon WHERE school_year = ?');
+$stmt->execute([$year]);
+$canonId = $stmt->fetchColumn();
+
+if ($canonId === false) {
+    fwrite(STDERR, "No canon for school year {$year}.\n");
+    exit(1);
+}
+
+$keys = [];
+while (($line = fgets(STDIN)) !== false) {
+    $line = trim($line);
+    if ($line !== '') {
+        $keys[] = $line;
+    }
+}
+
+$works = (new WorkViewLoader($pdo))->loadByMatchKeys((int) $canonId, $keys);
+
+if (count($works) !== count($keys)) {
+    fwrite(STDERR, sprintf("Warning: %d of %d keys matched a work.\n\n", count($works), count($keys)));
+}
+
+$ruleSet = RuleSet::fromCanon($pdo, (int) $canonId);
+
+foreach ($ruleSet->evaluate($works) as $result) {
+    // mb_str_pad, not printf padding: printf counts bytes, so Czech labels
+    // would misalign by one column per diacritic.
+    printf(
+        "%s %s %2d/%-2d %s\n",
+        $result->satisfied ? 'OK ' : '!! ',
+        mb_str_pad($result->label, 60),
+        $result->current,
+        $result->required,
+        (string) $result->detail
+    );
+}
+
+echo "\n", $ruleSet->isComplete($works) ? "Seznam splňuje všechna pravidla.\n" : "Seznam zatím nesplňuje všechna pravidla.\n";
