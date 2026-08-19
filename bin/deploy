@@ -8,10 +8,12 @@
 # i import se pouštějí odtud proti produkční databázi, která je odsud dostupná.
 #
 # Použití:
-#   bin/deploy code      jen kód (git pull na produkci + vendor přes tar)
-#   bin/deploy db        jen databáze (migrace + import proti produkci)
-#   bin/deploy all       obojí
 #   bin/deploy check     nic nemění, jen ověří přístupy a vypíše stav
+#   bin/deploy migrate   jen migrace schématu
+#   bin/deploy code      jen kód (git pull na produkci + vendor přes tar)
+#   bin/deploy import    jen import kánonu (trvá proti vzdálené DB několik minut)
+#   bin/deploy db        migrace + import
+#   bin/deploy all       migrace, pak kód, pak import — v tomhle pořadí
 set -euo pipefail
 
 SSH_HOST=www@ht2.3kt.cz
@@ -123,6 +125,12 @@ PHP
     trap 'rm -f "${LOCAL}/config.production.php"' EXIT
 }
 
+importuj() {
+    step "Import kánonu proti produkční databázi"
+    write_production_config
+    sudo docker exec -w /data/www/kanonmaker -e KANON_CONFIG=config.production.php kanon-www php bin/import
+}
+
 db() {
     step "Migrace a import proti produkční databázi"
     # Běží odtud: produkční kontejner nemá PHP.
@@ -149,7 +157,11 @@ case "${1:-check}" in
     check)   check ;;
     code)    code; verify ;;
     migrate) migrate; verify ;;
-    db)     db; verify ;;
-    all)    code; db; verify ;;
+    import)  importuj; verify ;;
+    db)      db; verify ;;
+    # Pořadí je záměrné: migrace PŘED kódem. Nový kód obvykle počítá s novým
+    # sloupcem, a kdyby se nasadil dřív, web by do doběhnutí migrace vracel
+    # chyby. Opačně to nevadí — starý kód nový sloupec prostě ignoruje.
+    all)     migrate; code; importuj; verify ;;
     *)       echo "Použití: bin/deploy {check|code|migrate|db|all}" >&2; exit 1 ;;
 esac
