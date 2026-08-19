@@ -95,9 +95,15 @@ PHP
     $SSH "chmod 600 ${REMOTE_APP}/config.local.php && echo '  config.local.php zapsán'"
 }
 
-db() {
-    step "Migrace a import proti produkční databázi"
-    # Běží odtud: produkční kontejner nemá PHP.
+# Jen migrace, bez importu. Import trvá proti vzdálené databázi několik minut,
+# a při běžné změně schématu nebo popisků není potřeba.
+migrate() {
+    step "Migrace proti produkční databázi"
+    write_production_config
+    sudo docker exec -w /data/www/kanonmaker -e KANON_CONFIG=config.production.php kanon-www php bin/migrate
+}
+
+write_production_config() {
     cat > "${LOCAL}/config.production.php" <<PHP
 <?php
 
@@ -115,6 +121,12 @@ return [
 PHP
     chmod 600 "${LOCAL}/config.production.php"
     trap 'rm -f "${LOCAL}/config.production.php"' EXIT
+}
+
+db() {
+    step "Migrace a import proti produkční databázi"
+    # Běží odtud: produkční kontejner nemá PHP.
+    write_production_config
 
     sudo docker exec -w /data/www/kanonmaker -e KANON_CONFIG=config.production.php kanon-www php bin/migrate
     sudo docker exec -w /data/www/kanonmaker -e KANON_CONFIG=config.production.php kanon-www php bin/import
@@ -134,9 +146,10 @@ verify() {
 : "${DB_PASS:?Nastav DB_PASS - heslo k produkční databázi (je v ~/CLAUDE.md)}"
 
 case "${1:-check}" in
-    check)  check ;;
-    code)   code; verify ;;
+    check)   check ;;
+    code)    code; verify ;;
+    migrate) migrate; verify ;;
     db)     db; verify ;;
     all)    code; db; verify ;;
-    *)      echo "Použití: bin/deploy {check|code|db|all}" >&2; exit 1 ;;
+    *)       echo "Použití: bin/deploy {check|code|migrate|db|all}" >&2; exit 1 ;;
 esac

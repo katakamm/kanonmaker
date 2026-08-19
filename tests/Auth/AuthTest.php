@@ -178,6 +178,27 @@ final class AuthTest extends TestCase
         self::assertNull($session->get('_user_id'), 'the dead id is removed from the session');
     }
 
+    public function testChangingThePasswordReplacesTheHashAndTheOldOneStopsWorking(): void
+    {
+        $id = $this->users->create($this->email, 'tajneheslo123', 'Kata');
+
+        $this->users->updatePassword($id, 'novejsiheslo456');
+        $user = $this->users->findById($id);
+
+        self::assertTrue(password_verify('novejsiheslo456', $user['password_hash']));
+        self::assertFalse(password_verify('tajneheslo123', $user['password_hash']));
+        self::assertTrue($this->auth()->attempt($this->email, 'novejsiheslo456'));
+        self::assertFalse($this->auth()->attempt($this->email, 'tajneheslo123'));
+    }
+
+    public function testTheNewPasswordIsStoredHashed(): void
+    {
+        $id = $this->users->create($this->email, 'tajneheslo123', 'Kata');
+        $this->users->updatePassword($id, 'novejsiheslo456');
+
+        self::assertNotSame('novejsiheslo456', $this->users->findById($id)['password_hash']);
+    }
+
     public function testOldFailuresFallOutOfTheWindow(): void
     {
         $stmt = $this->pdo->prepare(

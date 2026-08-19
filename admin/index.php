@@ -48,19 +48,28 @@ $session = new PhpSession();
 $csrf    = new Csrf($session);
 $view    = new View($appRoot . '/templates');
 
-$canonId = (int) $pdo->query("SELECT id FROM canon WHERE school_year = '2025/2026'")->fetchColumn();
+$schoolYear = '2025/2026';
+$canonId    = (int) $pdo->query("SELECT id FROM canon WHERE school_year = '2025/2026'")->fetchColumn();
+
+$canonDocumentUrl = 'https://docs.google.com/document/d/1N68YrxFv_VJi6P9MoUL6-A1-0JUbtCYDYliCUSby-0M/edit';
 
 $users    = new UserRepository($pdo);
 $throttle = new LoginThrottle($pdo);
 $auth     = new Auth($users, $throttle, $session);
 
-$page = function (string $title, string $template, array $data = []) use ($view, $session, $csrf, $auth): string {
+$page = function (string $title, string $template, array $data = []) use (
+    $view, $session, $csrf, $auth, $canonDocumentUrl, $schoolYear
+): string {
     return $view->render('layout', [
         'title'     => $title . ' · administrace',
         'user'      => $auth->user(),
         'csrfToken' => $csrf->token(),
         'flashes'   => $session->takeFlashes(),
-        'rulebar'   => '',
+        'rulebar'          => '',
+        // V administraci se nikdo neregistruje - účty zakládá správce.
+        'showRegister'     => false,
+        'canonDocumentUrl' => $canonDocumentUrl,
+        'schoolYear'       => $schoolYear,
         'content'   => $view->render($template, $data + [
             'user'      => $auth->user(),
             'csrfToken' => $csrf->token(),
@@ -111,6 +120,8 @@ $router = new Router();
 $router->get('/prihlaseni', static fn (): Response => $authController->showLogin());
 $router->post('/prihlaseni', static fn (): Response => $authController->login($_POST));
 $router->post('/odhlasit', static fn (): Response => $authController->logout($_POST));
+$router->get('/heslo', static fn (): Response => $guard() ?? $authController->showPassword());
+$router->post('/heslo', static fn (): Response => $guard() ?? $authController->changePassword($_POST));
 
 $router->get('/', static fn (): Response => $guard() ?? $dashboardController->show());
 

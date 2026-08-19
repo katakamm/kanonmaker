@@ -44,7 +44,11 @@ $session = new PhpSession();
 $csrf    = new Csrf($session);
 $view    = new View($appRoot . '/templates');
 
-$canonId = (int) $pdo->query("SELECT id FROM canon WHERE school_year = '2025/2026'")->fetchColumn();
+$schoolYear = '2025/2026';
+$canonId    = (int) $pdo->query("SELECT id FROM canon WHERE school_year = '2025/2026'")->fetchColumn();
+
+// Odkaz na původní školní dokument - odtud se kánon importuje.
+$canonDocumentUrl = 'https://docs.google.com/document/d/1N68YrxFv_VJi6P9MoUL6-A1-0JUbtCYDYliCUSby-0M/edit';
 
 $users    = new UserRepository($pdo);
 $throttle = new LoginThrottle($pdo);
@@ -64,7 +68,7 @@ $listIds = static function () use ($auth, $listRepo, $canonId): array {
 // Every template gets user, csrfToken, inList and back for free, so no
 // controller has to remember them. A controller may still override any of them.
 $page = function (string $title, string $template, array $data = []) use (
-    $view, $session, $csrf, $auth, $ruleSet, $viewLoader, $listIds
+    $view, $session, $csrf, $auth, $ruleSet, $viewLoader, $listIds, $canonDocumentUrl, $schoolYear
 ): string {
     $rulebar = '';
 
@@ -81,7 +85,10 @@ $page = function (string $title, string $template, array $data = []) use (
         'user'      => $auth->user(),
         'csrfToken' => $csrf->token(),
         'flashes'   => $session->takeFlashes(),
-        'rulebar'   => $rulebar,
+        'rulebar'          => $rulebar,
+        'showRegister'     => true,
+        'canonDocumentUrl' => $canonDocumentUrl,
+        'schoolYear'       => $schoolYear,
         'content'   => $view->render($template, $data + [
             'user'      => $auth->user(),
             'csrfToken' => $csrf->token(),
@@ -107,6 +114,8 @@ $router->post('/registrace', static fn (): Response => $authController->register
 $router->get('/prihlaseni', static fn (): Response => $authController->showLogin());
 $router->post('/prihlaseni', static fn (): Response => $authController->login($_POST));
 $router->post('/odhlasit', static fn (): Response => $authController->logout($_POST));
+$router->get('/heslo', static fn (): Response => $authController->showPassword());
+$router->post('/heslo', static fn (): Response => $authController->changePassword($_POST));
 
 $router->get('/kanon', static function () use ($canonController): Response {
     $query = (string) ($_SERVER['QUERY_STRING'] ?? '');

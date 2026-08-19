@@ -14,14 +14,19 @@
         <?php if ($user !== null): ?>
             <a href="/kanon">Kánon</a>
             <a href="/export">Export</a>
+            <a href="/heslo">Heslo</a>
             <form method="post" action="/odhlasit">
                 <input type="hidden" name="_token" value="<?= $this->e($csrfToken) ?>">
                 <button class="btn btn--quiet btn--small">Odhlásit</button>
             </form>
         <?php else: ?>
-            <a href="/kanon">Kánon</a>
+            <?php if ($showRegister ?? true): ?>
+                <a href="/kanon">Kánon</a>
+            <?php endif; ?>
             <a href="/prihlaseni">Přihlásit</a>
-            <a href="/registrace">Registrovat</a>
+            <?php if ($showRegister ?? true): ?>
+                <a href="/registrace">Registrovat</a>
+            <?php endif; ?>
         <?php endif; ?>
     </nav>
 </header>
@@ -33,6 +38,16 @@
 
     <?= $content ?>
 </main>
+
+<footer class="wrap" style="margin:2rem 0 1rem;padding-top:1rem;border-top:1px solid var(--line)">
+    <p class="muted">
+        Seznam vychází ze
+        <a href="<?= $this->e($canonDocumentUrl) ?>" target="_blank" rel="noopener">
+            školního kánonu GJK
+        </a>
+        pro školní rok <?= $this->e($schoolYear) ?>.
+    </p>
+</footer>
 
 <?= $rulebar ?>
 <script src="/assets/app.js" defer></script>

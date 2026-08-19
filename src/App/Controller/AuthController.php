@@ -94,6 +94,53 @@ final class AuthController
         return Response::redirect('/');
     }
 
+    public function showPassword(): Response
+    {
+        if (!$this->auth->check()) {
+            return Response::redirect('/prihlaseni');
+        }
+
+        return Response::html(($this->page)('Změna hesla', 'password'));
+    }
+
+    public function changePassword(array $input): Response
+    {
+        $user = $this->auth->user();
+
+        if ($user === null) {
+            return Response::redirect('/prihlaseni');
+        }
+
+        if (!$this->csrf->check($input['_token'] ?? null)) {
+            $this->session->flash('warn', 'Formulář vypršel, zkus to prosím znovu.');
+
+            return Response::redirect('/heslo');
+        }
+
+        $current = (string) ($input['current'] ?? '');
+        $new     = (string) ($input['password'] ?? '');
+        $again   = (string) ($input['password_again'] ?? '');
+
+        $error = match (true) {
+            !$this->users->verify($user, $current) => 'Stávající heslo nesouhlasí.',
+            mb_strlen($new) < 8                    => 'Nové heslo musí mít alespoň 8 znaků.',
+            $new !== $again                        => 'Nová hesla se neshodují.',
+            $new === $current                      => 'Nové heslo je stejné jako to stávající.',
+            default                                => null,
+        };
+
+        if ($error !== null) {
+            $this->session->flash('warn', $error);
+
+            return Response::redirect('/heslo');
+        }
+
+        $this->users->updatePassword((int) $user['id'], $new);
+        $this->session->flash('ok', 'Heslo změněno.');
+
+        return Response::redirect('/');
+    }
+
     public function logout(array $input): Response
     {
         if ($this->csrf->check($input['_token'] ?? null)) {

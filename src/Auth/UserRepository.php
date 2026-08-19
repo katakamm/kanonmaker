@@ -51,6 +51,12 @@ final class UserRepository
         return (int) $this->pdo->lastInsertId();
     }
 
+    public function updatePassword(int $userId, string $plainPassword): void
+    {
+        $this->pdo->prepare('UPDATE user SET password_hash = ? WHERE id = ?')
+            ->execute([password_hash($plainPassword, PASSWORD_DEFAULT), $userId]);
+    }
+
     public function verify(array $user, string $plainPassword): bool
     {
         return password_verify($plainPassword, $user['password_hash']);

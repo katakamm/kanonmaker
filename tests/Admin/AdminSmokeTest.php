@@ -69,6 +69,15 @@ final class AdminSmokeTest extends TestCase
         self::assertSame(200, $status, 'the assets symlink is missing');
     }
 
+    public function testNobodyCanRegisterOnTheAdminHost(): void
+    {
+        [$getStatus]  = $this->fetch('/registrace');
+        [, $loginPage] = $this->fetch('/prihlaseni');
+
+        self::assertSame(404, $getStatus, 'accounts on the admin host are created by an administrator');
+        self::assertStringNotContainsString('Registrovat', $loginPage, 'and nothing invites you to try');
+    }
+
     public function testAnUnknownAdminPathIsFourOhFour(): void
     {
         [$status] = $this->fetch('/tudy-ne');
