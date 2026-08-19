@@ -2,10 +2,10 @@
    Toto je jediný soubor v projektu, který smí obsahovat konkrétní barvu.
    Výměna palety = úprava tohoto souboru, nikde jinde.
 
-   Základ zadala Kata: pozadí #FFFBCA, text #2D120D a šest barev pro značky.
-   Odvozené odstíny (--line, --ink-soft, --ok*, --warn*) vznikly smícháním
-   těchto barev s pozadím tak, aby každá kombinace textu a podkladu měla
-   kontrast alespoň 4.5:1. Konkrétní naměřené hodnoty jsou v komentářích. */
+   Pozadí, text a tlačítko zadala Kata a zůstávají beze změny. Šest barev pro
+   značky je z druhého zadání; pět z nich nese skupiny značek, šestá (#8EBF6B)
+   slouží jako barva splněného pravidla. Odvozené odstíny vznikly smícháním
+   se zadanými barvami tak, aby každá dvojice text/podklad měla aspoň 4.5:1. */
 :root {
     --bg:            #FFFBCA;   /* zadané pozadí */
     --bg-raised:     #FFFDE7;   /* karty a lišty - o něco světlejší než pozadí */
@@ -13,28 +13,27 @@
     --ink-soft:      #7D6B55;   /* vedlejší text; 4.8:1 */
     --line:          #E4DDB1;   /* linky a rámečky */
 
-    /* #23617E je jediná ze zadaných barev dost tmavá na tlačítko:
-       bílý text na ní má 6.8:1, na pozadí jako odkaz 6.5:1. */
+    /* Zadané tlačítko; bílý text na něm 6.8:1, jako odkaz na pozadí 6.5:1. */
     --accent:        #23617E;
     --accent-ink:    #FFFFFF;
     --accent-soft:   #E5E9C1;
 
-    /* Stavy: ztmavená zelená a korálová ze zadané palety. */
-    --ok:            #4E6C54;   /* na pozadí 5.5:1 */
-    --ok-soft:       #DBE8B9;
+    /* Stavy: splněno ze zadané zelené #8EBF6B, nesplněno tlumeně cihlově. */
+    --ok:            #506B3C;   /* na pozadí 5.7:1 */
+    --ok-soft:       #DFEAAF;
     --warn:          #883D35;   /* na pozadí 7.2:1 */
     --warn-soft:     #F8D6AE;
 
-    /* Značky. Pět zadaných barev; text je na všech tmavý (4.8:1 až 10:1). */
-    --chip-obdobi-bg:     #94BEBB;  /* období - tlumená modrozelená */
+    /* Značky - zadaná paleta. Text je na všech tmavý, kontrast 4.7:1 až 10.3:1. */
+    --chip-obdobi-bg:     #9EBDB8;  /* období - šedozelená (8.7:1) */
     --chip-obdobi-ink:    #2D120D;
-    --chip-podobdobi-bg:  #F2B6A3;  /* literární období - meruňková */
+    --chip-podobdobi-bg:  #EEB6A9;  /* literární období - meruňková (9.9:1) */
     --chip-podobdobi-ink: #2D120D;
-    --chip-narodni-bg:    #86BA90;  /* národní literatura - zelená */
+    --chip-narodni-bg:    #839C7D;  /* národní literatura - šalvějová (5.8:1) */
     --chip-narodni-ink:   #2D120D;
-    --chip-forma-bg:      #9E7B9B;  /* literární forma - fialová */
+    --chip-forma-bg:      #997C9A;  /* literární forma - fialová (4.7:1) */
     --chip-forma-ink:     #2D120D;
-    --chip-special-bg:    #E36559;  /* zvláštní značka - korálová, nejnápadnější */
+    --chip-special-bg:    #F2BF62;  /* zvláštní značka - jantarová (10.3:1) */
     --chip-special-ink:   #2D120D;
 
     --radius:      14px;
