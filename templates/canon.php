@@ -12,9 +12,9 @@
 
     <p class="muted" style="margin:.75rem 0 .25rem">Kapitola</p>
     <ul class="chips">
-        <li><a class="chip chip--obdobi" href="/kanon">vše (<?= $this->e($total) ?>)</a></li>
+        <li><a class="chip chip--kapitola" href="/kanon">vše (<?= $this->e($total) ?>)</a></li>
         <?php foreach ($chapters as $chapter): ?>
-            <li><a class="chip chip--obdobi" href="/kanon?kapitola=<?= $this->e($chapter['id']) ?>">
+            <li><a class="chip chip--kapitola" href="/kanon?kapitola=<?= $this->e($chapter['id']) ?>">
                 <?= $this->e($chapter['name']) ?> (<?= $this->e($chapter['works']) ?>)
             </a></li>
         <?php endforeach; ?>

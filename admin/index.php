@@ -125,7 +125,7 @@ $router->post('/heslo', static fn (): Response => $guard() ?? $authController->c
 
 $router->get('/', static fn (): Response => $guard() ?? $dashboardController->show());
 
-$router->get('/kontrola', static fn (): Response => $guard() ?? $reviewController->show());
+$router->get('/kontrola', static fn (): Response => $guard() ?? $reviewController->show($_GET));
 $router->post('/kontrola/potvrdit-skupinu', static fn (): Response => $guard() ?? $reviewController->confirmGroup($_POST));
 $router->post('/kontrola/opravit', static fn (): Response => $guard() ?? $reviewController->correct($_POST));
 

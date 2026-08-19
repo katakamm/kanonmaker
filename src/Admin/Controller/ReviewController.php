@@ -22,12 +22,14 @@ final class ReviewController
     ) {
     }
 
-    public function show(): Response
+    public function show(array $query = []): Response
     {
         return Response::html(($this->page)('Ke kontrole', 'admin/review', [
             'groups'    => $this->review->groups($this->canonId),
             'remaining' => $this->review->unverifiedCount($this->canonId),
             'choices'   => $this->works->tagGroups($this->canonId),
+            // Skupina, kterou má stránka nechat rozbalenou (viz correct()).
+            'openGroup' => (string) ($query['skupina_id'] ?? ''),
         ]));
     }
 
@@ -68,6 +70,13 @@ final class ReviewController
 
         $this->session->flash($ok ? 'ok' : 'warn', $ok ? 'Značka opravena.' : 'Takovou značku neznám.');
 
-        return Response::redirect('/kontrola');
+        // Zpátky na tutéž skupinu, rozbalenou, a přes kotvu i na stejné místo
+        // stránky. Bez toho odhodí opravu jednoho díla uživatele nahoru a
+        // opravit několik děl po sobě je otrava.
+        $groupId = preg_replace('/[^a-z0-9_-]/i', '', (string) ($input['skupina_id'] ?? ''));
+
+        return Response::redirect(
+            $groupId === '' ? '/kontrola' : '/kontrola?skupina_id=' . $groupId . '#' . $groupId
+        );
     }
 }

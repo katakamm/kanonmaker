@@ -12,9 +12,6 @@
 <p class="muted">Kapitola kánonu: <?= $this->e($work['chapter']) ?></p>
 
 <ul class="chips" style="margin:1rem 0">
-    <?php if (($work['chapter_chip'] ?? '') !== ''): ?>
-        <li class="chip chip--kapitola">kapitola: <?= $this->e($work['chapter_chip']) ?></li>
-    <?php endif; ?>
     <?php foreach (\Kanon\App\Ui::orderedTags($work['tags']) as $tag): ?>
         <li class="chip chip--<?= $this->e($tag['group']) ?><?= $tag['verified'] ? '' : ' chip--unverified' ?>">
             <?= $this->e(\Kanon\App\Ui::groupLabel($tag['group'])) ?>: <?= $this->e($tag['label']) ?>

@@ -11,7 +11,8 @@
     </p>
 
     <?php foreach ($groups as $group): ?>
-        <section style="margin:1.5rem 0;padding-bottom:1rem;border-bottom:1px solid var(--line)">
+        <?php $groupId = 'g' . $group['chapter_id'] . '-' . $group['tag_group'] . '-' . $group['code']; ?>
+        <section id="<?= $this->e($groupId) ?>" style="margin:1.5rem 0;padding-bottom:1rem;border-bottom:1px solid var(--line)">
             <p class="muted" style="margin:0"><?= $this->e($group['chapter']) ?></p>
 
             <h3 style="margin:.2rem 0 .5rem">
@@ -20,7 +21,7 @@
                 <span class="muted">(<?= $this->e($group['count']) ?>)</span>
             </h3>
 
-            <details>
+            <details<?= ($openGroup ?? '') === $groupId ? ' open' : '' ?>>
                 <summary class="muted" style="min-height:var(--tap);display:flex;align-items:center;cursor:pointer">
                     Zobrazit díla a opravit jednotlivě
                 </summary>
@@ -36,6 +37,7 @@
                                     <input type="hidden" name="_token" value="<?= $this->e($csrfToken) ?>">
                                     <input type="hidden" name="work_id" value="<?= $this->e($work['id']) ?>">
                                     <input type="hidden" name="skupina" value="<?= $this->e($group['tag_group']) ?>">
+                                    <input type="hidden" name="skupina_id" value="<?= $this->e($groupId) ?>">
                                     <select name="znacka">
                                         <?php foreach ($choices[$group['tag_group']] ?? [] as $choice): ?>
                                             <option value="<?= $this->e($choice['code']) ?>"

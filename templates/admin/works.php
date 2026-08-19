@@ -22,9 +22,6 @@
                     <a href="/dila/<?= $this->e($work['id']) ?>" class="plain"><?= $this->e($work['title']) ?></a>
                 </div>
                 <ul class="chips">
-                    <?php if (($work['chapter_chip'] ?? '') !== ''): ?>
-                        <li class="chip chip--kapitola" title="kapitola kánonu"><?= $this->e($work['chapter_chip']) ?></li>
-                    <?php endif; ?>
                     <?php foreach (\Kanon\App\Ui::orderedTags($work['tags']) as $tag): ?>
                         <li class="chip chip--<?= $this->e($tag['group']) ?><?= $tag['verified'] ? '' : ' chip--unverified' ?>">
                             <?= $this->e($tag['label']) ?>

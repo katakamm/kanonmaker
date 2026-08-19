@@ -146,29 +146,6 @@ final class WorkRepositoryTest extends TestCase
         self::assertSame([], $this->repo->findMany($this->canonId, []));
     }
 
-    public function testEveryWorkCarriesAShortChapterChip(): void
-    {
-        foreach ($this->repo->browse($this->canonId) as $work) {
-            self::assertNotSame('', $work['chapter_chip'], "{$work['title']} has no chapter chip");
-            self::assertLessThanOrEqual(
-                24,
-                mb_strlen($work['chapter_chip']),
-                'a chapter chip sits on every one of 461 cards, so it must stay short'
-            );
-        }
-    }
-
-    public function testTheChapterChipIsShorterThanTheHeadingItAbbreviates(): void
-    {
-        $work = $this->repo->browse($this->canonId)[0];
-
-        self::assertLessThan(
-            mb_strlen($work['chapter']),
-            mb_strlen($work['chapter_chip']),
-            'the chip is the compact form; the heading stays descriptive'
-        );
-    }
-
     public function testChaptersComeBackInDocumentOrderWithCounts(): void
     {
         $chapters = $this->repo->chapters($this->canonId);
