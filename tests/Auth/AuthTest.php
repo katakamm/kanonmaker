@@ -133,6 +133,51 @@ final class AuthTest extends TestCase
         self::assertFalse($this->throttle->tooMany($this->email));
     }
 
+    public function testASessionSurvivingItsDeletedAccountIsSignedOut(): void
+    {
+        $id      = $this->users->create($this->email, 'tajneheslo123', 'Kata');
+        $session = new ArraySession();
+        $auth    = new Auth($this->users, $this->throttle, $session);
+
+        self::assertTrue($auth->attempt($this->email, 'tajneheslo123'));
+
+        $this->pdo->prepare('DELETE FROM user WHERE id = ?')->execute([$id]);
+
+        // A fresh Auth, as the next request would build.
+        $next = new Auth($this->users, $this->throttle, $session);
+
+        self::assertFalse($next->check());
+        self::assertNull($next->user());
+        self::assertNull($next->id(), 'an id with no row behind it would break every foreign key using it');
+    }
+
+    public function testADeactivatedAccountIsSignedOutToo(): void
+    {
+        $id      = $this->users->create($this->email, 'tajneheslo123', 'Kata');
+        $session = new ArraySession();
+        $auth    = new Auth($this->users, $this->throttle, $session);
+        $auth->attempt($this->email, 'tajneheslo123');
+
+        $this->pdo->prepare('UPDATE user SET active = 0 WHERE id = ?')->execute([$id]);
+
+        $next = new Auth($this->users, $this->throttle, $session);
+
+        self::assertFalse($next->check(), 'blocking a student must not 500 their browser');
+        self::assertNull($next->id());
+    }
+
+    public function testTheStaleSessionIsClearedSoItStopsCostingAQuery(): void
+    {
+        $id      = $this->users->create($this->email, 'tajneheslo123', 'Kata');
+        $session = new ArraySession();
+        (new Auth($this->users, $this->throttle, $session))->attempt($this->email, 'tajneheslo123');
+
+        $this->pdo->prepare('DELETE FROM user WHERE id = ?')->execute([$id]);
+        (new Auth($this->users, $this->throttle, $session))->check();
+
+        self::assertNull($session->get('_user_id'), 'the dead id is removed from the session');
+    }
+
     public function testOldFailuresFallOutOfTheWindow(): void
     {
         $stmt = $this->pdo->prepare(

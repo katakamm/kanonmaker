@@ -10,6 +10,9 @@ final class Auth
 {
     private const KEY = '_user_id';
 
+    private ?array $cachedUser = null;
+    private bool $loaded       = false;
+
     public function __construct(
         private readonly UserRepository $users,
         private readonly LoginThrottle $throttle,
@@ -34,22 +37,50 @@ final class Auth
         $this->throttle->clear($email);
         $this->session->regenerate();
         $this->session->set(self::KEY, (int) $user['id']);
+        $this->forget();
 
         return true;
     }
 
+    /**
+     * The signed-in user, or null.
+     *
+     * A session can outlive the account it names: the account may have been
+     * deleted or deactivated while the cookie sat in someone's browser. Such a
+     * session is treated as signed out and cleared, so that no caller is handed
+     * an id with no row behind it — doing so once produced a foreign key
+     * violation and a fatal error on every page view.
+     */
     public function user(): ?array
     {
-        $id = $this->session->get(self::KEY);
+        if ($this->loaded) {
+            return $this->cachedUser;
+        }
 
-        return is_int($id) ? $this->users->findById($id) : null;
+        $this->loaded = true;
+        $id           = $this->session->get(self::KEY);
+
+        if (!is_int($id)) {
+            return $this->cachedUser = null;
+        }
+
+        $user = $this->users->findById($id);
+
+        if ($user === null || (int) $user['active'] !== 1) {
+            $this->session->remove(self::KEY);
+
+            return $this->cachedUser = null;
+        }
+
+        return $this->cachedUser = $user;
     }
 
+    /** Never returns an id whose user is missing or deactivated. */
     public function id(): ?int
     {
-        $id = $this->session->get(self::KEY);
+        $user = $this->user();
 
-        return is_int($id) ? $id : null;
+        return $user === null ? null : (int) $user['id'];
     }
 
     public function check(): bool
@@ -66,5 +97,12 @@ final class Auth
     {
         $this->session->remove(self::KEY);
         $this->session->regenerate();
+        $this->forget();
+    }
+
+    private function forget(): void
+    {
+        $this->loaded     = false;
+        $this->cachedUser = null;
     }
 }

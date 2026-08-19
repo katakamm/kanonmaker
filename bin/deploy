@@ -32,7 +32,7 @@ REMOTE_HOME=/data/www/kata.slimak.cz
 REMOTE_APP=${REMOTE_HOME}/kanonmaker
 REMOTE_DOCROOT=${REMOTE_HOME}/kata.slimak.cz/htdocs_3ecd01dda5d32f4cdace8c002a2b6c6a
 LOCAL=/data/www/kanonmaker
-BRANCH=${BRANCH:-main}
+BRANCH=${BRANCH:-foundation}   # výchozí větev repozitáře
 REPO=git@github.com:katakamm/kanonmaker.git
 
 step() { printf '\n\033[1m== %s\033[0m\n' "$1"; }
