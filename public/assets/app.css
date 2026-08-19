@@ -55,10 +55,16 @@ input:focus, select:focus, button:focus { outline: 2px solid var(--accent); outl
 .chips { display: flex; flex-wrap: wrap; gap: .3rem; list-style: none; margin: .35rem 0 0; padding: 0; }
 .chip {
     display: inline-block;
+    max-width: 100%;
     padding: .15rem .55rem; border-radius: var(--radius-chip);
     font-size: .72rem; font-family: system-ui, sans-serif; white-space: nowrap;
     text-decoration: none;
 }
+
+/* Značky u díla jsou krátké a na jednom řádku se vejdou. Názvy kapitol ve
+   filtru ne — bez tohohle by jediná dlouhá "pilulka" byla širší než telefon
+   a odsunula by celou stránku do strany. */
+.filters .chip { white-space: normal; }
 .chip--obdobi    { background: var(--chip-obdobi-bg);    color: var(--chip-obdobi-ink); }
 .chip--podobdobi { background: var(--chip-podobdobi-bg); color: var(--chip-podobdobi-ink); }
 .chip--narodni   { background: var(--chip-narodni-bg);   color: var(--chip-narodni-ink); }

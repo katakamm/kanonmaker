@@ -27,7 +27,7 @@ final class ReviewRepository
     public function groups(int $canonId): array
     {
         $stmt = $this->pdo->prepare(
-            "SELECT c.id AS chapter_id, c.name AS chapter, t.tag_group, t.code, t.label,
+            "SELECT c.id AS chapter_id, COALESCE(c.short_name, c.name) AS chapter, t.tag_group, t.code, t.label,
                     w.id AS work_id, w.title, w.sort_order,
                     COALESCE(GROUP_CONCAT(DISTINCT a.display_name SEPARATOR '; '), '') AS authors
              FROM work_tag wt
@@ -37,7 +37,7 @@ final class ReviewRepository
              LEFT JOIN work_author wa ON wa.work_id = w.id
              LEFT JOIN author a ON a.id = wa.author_id
              WHERE w.canon_id = ? AND wt.verified = 0
-             GROUP BY c.id, c.name, t.tag_group, t.code, t.label, w.id, w.title, w.sort_order
+             GROUP BY c.id, c.short_name, c.name, t.tag_group, t.code, t.label, w.id, w.title, w.sort_order
              ORDER BY c.sort_order, t.tag_group, t.sort_order, w.sort_order"
         );
         $stmt->execute([$canonId]);

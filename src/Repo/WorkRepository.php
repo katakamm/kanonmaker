@@ -117,10 +117,10 @@ final class WorkRepository
     public function chapters(int $canonId): array
     {
         $stmt = $this->pdo->prepare(
-            'SELECT c.id, c.name, c.sort_order, COUNT(w.id) AS works
+            'SELECT c.id, COALESCE(c.short_name, c.name) AS name, c.sort_order, COUNT(w.id) AS works
              FROM chapter c LEFT JOIN work w ON w.chapter_id = c.id
              WHERE c.canon_id = ?
-             GROUP BY c.id, c.name, c.sort_order
+             GROUP BY c.id, c.short_name, c.name, c.sort_order
              ORDER BY c.sort_order'
         );
         $stmt->execute([$canonId]);
@@ -194,7 +194,7 @@ final class WorkRepository
         }
 
         $stmt = $this->pdo->prepare(
-            "SELECT c.id, c.name FROM chapter c WHERE c.id IN (
+            "SELECT c.id, COALESCE(c.short_name, c.name) AS name FROM chapter c WHERE c.id IN (
                 SELECT chapter_id FROM work WHERE id IN ({$placeholders}))"
         );
         $stmt->execute($ids);

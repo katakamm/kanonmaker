@@ -220,6 +220,27 @@ final class ImporterTest extends TestCase
         self::assertGreaterThan(0, $report->tagsSkippedHuman);
     }
 
+    public function testAChaptersDisplayNameSurvivesReimport(): void
+    {
+        $this->importer()->import($this->canonId, $this->html, $this->csv);
+
+        $this->pdo->prepare('UPDATE chapter SET short_name = ? WHERE canon_id = ? AND sort_order = 1')
+            ->execute(['Zkrácený název', $this->canonId]);
+
+        $this->importer()->import($this->canonId, $this->html, $this->csv);
+
+        $stmt = $this->pdo->prepare('SELECT name, short_name FROM chapter WHERE canon_id = ? AND sort_order = 1');
+        $stmt->execute([$this->canonId]);
+        $chapter = $stmt->fetch();
+
+        self::assertSame('Zkrácený název', $chapter['short_name'], 'the display name is ours to keep');
+        self::assertStringContainsString(
+            'Světová a česká literatura',
+            $chapter['name'],
+            'while the document heading stays verbatim, because the import matches on it'
+        );
+    }
+
     public function testDryRunChangesNothing(): void
     {
         $report = $this->importer()->import($this->canonId, $this->html, $this->csv, true);
