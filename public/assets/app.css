@@ -65,6 +65,7 @@ input:focus, select:focus, button:focus { outline: 2px solid var(--accent); outl
    filtru ne — bez tohohle by jediná dlouhá "pilulka" byla širší než telefon
    a odsunula by celou stránku do strany. */
 .filters .chip { white-space: normal; }
+.chip--kapitola  { background: var(--chip-kapitola-bg);  color: var(--chip-kapitola-ink); }
 .chip--obdobi    { background: var(--chip-obdobi-bg);    color: var(--chip-obdobi-ink); }
 .chip--podobdobi { background: var(--chip-podobdobi-bg); color: var(--chip-podobdobi-ink); }
 .chip--narodni   { background: var(--chip-narodni-bg);   color: var(--chip-narodni-ink); }

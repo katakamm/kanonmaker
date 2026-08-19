@@ -2,9 +2,9 @@
    Toto je jediný soubor v projektu, který smí obsahovat konkrétní barvu.
    Výměna palety = úprava tohoto souboru, nikde jinde.
 
-   Pozadí, text a tlačítko zadala Kata a zůstávají beze změny. Šest barev pro
-   značky je z druhého zadání; pět z nich nese skupiny značek, šestá (#8EBF6B)
-   slouží jako barva splněného pravidla. Odvozené odstíny vznikly smícháním
+   Pozadí, text a tlačítko zadala Kata a zůstávají beze změny. Šest zadaných
+   barev nese šest skupin značek: kapitola, období, literární období, národní
+   literatura, literární forma a zvláštní. Odvozené odstíny vznikly smícháním
    se zadanými barvami tak, aby každá dvojice text/podklad měla aspoň 4.5:1. */
 :root {
     --bg:            #FFFBCA;   /* zadané pozadí */
@@ -18,13 +18,15 @@
     --accent-ink:    #FFFFFF;
     --accent-soft:   #E5E9C1;
 
-    /* Stavy: splněno ze zadané zelené #8EBF6B, nesplněno tlumeně cihlově. */
-    --ok:            #506B3C;   /* na pozadí 5.7:1 */
-    --ok-soft:       #DFEAAF;
+    /* Stavy: splněno ztmavenou šalvějovou, nesplněno tlumeně cihlově. */
+    --ok:            #495746;   /* na pozadí 7.3:1 */
+    --ok-soft:       #DCE0B4;
     --warn:          #883D35;   /* na pozadí 7.2:1 */
     --warn-soft:     #F8D6AE;
 
     /* Značky - zadaná paleta. Text je na všech tmavý, kontrast 4.7:1 až 10.3:1. */
+    --chip-kapitola-bg:   #8EBF6B;  /* kapitola kánonu - zelená (8.2:1) */
+    --chip-kapitola-ink:  #2D120D;
     --chip-obdobi-bg:     #9EBDB8;  /* období - šedozelená (8.7:1) */
     --chip-obdobi-ink:    #2D120D;
     --chip-podobdobi-bg:  #EEB6A9;  /* literární období - meruňková (9.9:1) */

@@ -194,13 +194,17 @@ final class WorkRepository
         }
 
         $stmt = $this->pdo->prepare(
-            "SELECT c.id, COALESCE(c.short_name, c.name) AS name FROM chapter c WHERE c.id IN (
+            "SELECT c.id, COALESCE(c.short_name, c.name) AS name,
+                    COALESCE(c.chip_name, c.short_name, c.name) AS chip_name
+             FROM chapter c WHERE c.id IN (
                 SELECT chapter_id FROM work WHERE id IN ({$placeholders}))"
         );
         $stmt->execute($ids);
         $chapterNames = [];
+        $chapterChips = [];
         foreach ($stmt->fetchAll() as $row) {
             $chapterNames[(int) $row['id']] = $row['name'];
+            $chapterChips[(int) $row['id']] = $row['chip_name'];
         }
 
         $works = [];
@@ -211,7 +215,8 @@ final class WorkRepository
                 'title'      => $row['title'],
                 'note'       => $row['note'],
                 'chapter_id' => (int) $row['chapter_id'],
-                'chapter'    => $chapterNames[(int) $row['chapter_id']] ?? '',
+                'chapter'      => $chapterNames[(int) $row['chapter_id']] ?? '',
+                'chapter_chip' => $chapterChips[(int) $row['chapter_id']] ?? '',
                 'authors'    => implode('; ', $authors[$id] ?? []),
                 'tags'       => $tags[$id] ?? [],
             ];
