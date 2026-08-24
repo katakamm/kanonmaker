@@ -19,7 +19,7 @@ a { color: var(--accent); }
     background: var(--bg-raised); border-bottom: 1px solid var(--line);
 }
 .top h1 { margin: 0; font-size: 1.1rem; letter-spacing: .01em; }
-.top nav { display: flex; gap: .75rem; align-items: center; font-size: .9rem; }
+.top nav { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; justify-content: flex-end; font-size: .9rem; }
 
 .field { display: block; margin: 0 0 1rem; }
 .field span { display: block; margin-bottom: .3rem; font-size: .85rem; color: var(--ink-soft); }
@@ -73,6 +73,10 @@ input:focus, select:focus, button:focus { outline: 2px solid var(--accent); outl
 .chip--special   { background: var(--chip-special-bg);   color: var(--chip-special-ink); }
 .chip--unverified::after { content: " ?"; opacity: .55; }
 
+/* Nepotvrzená značka je tlačítko - kliknutím se potvrdí. */
+.chip--button { border: 1px dashed currentColor; cursor: pointer; font: inherit; font-size: .72rem; }
+.chip--button:hover { border-style: solid; }
+
 .rulebar {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
     background: var(--bg-raised); border-top: 1px solid var(--line);
@@ -107,6 +111,14 @@ input:focus, select:focus, button:focus { outline: 2px solid var(--accent); outl
 .filters summary { min-height: var(--tap); display: flex; align-items: center; cursor: pointer; }
 .checkline { display: flex; gap: .6rem; align-items: center; min-height: var(--tap); }
 .plain { color: inherit; text-decoration: none; }
+
+.site-footer {
+    margin: 2rem auto 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    text-align: center;
+}
+.site-footer p { margin: 0; }
 
 @media (min-width: 48rem) {
     body { padding-bottom: 0; }

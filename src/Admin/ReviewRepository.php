@@ -76,6 +76,95 @@ final class ReviewRepository
         return $groups;
     }
 
+    /**
+     * Works still holding an unconfirmed tag, in the order the school document
+     * lists them, each with *all* its tags — so a reviewer sees the whole book
+     * rather than one tag torn out of context.
+     *
+     * @return list<array{id:int, title:string, authors:string, chapter:string, chapter_id:int,
+     *                    tags: list<array{group:string, code:string, label:string, verified:bool, tag_id:int}>}>
+     */
+    public function worksNeedingReview(int $canonId, int $limit = 60, int $offset = 0): array
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT w.id, w.title, w.sort_order, c.id AS chapter_id,
+                    COALESCE(c.short_name, c.name) AS chapter,
+                    COALESCE(GROUP_CONCAT(DISTINCT a.display_name SEPARATOR '; '), '') AS authors
+             FROM work w
+             JOIN chapter c ON c.id = w.chapter_id
+             LEFT JOIN work_author wa ON wa.work_id = w.id
+             LEFT JOIN author a ON a.id = wa.author_id
+             WHERE w.canon_id = ?
+               AND EXISTS (SELECT 1 FROM work_tag wt WHERE wt.work_id = w.id AND wt.verified = 0)
+             GROUP BY w.id, w.title, w.sort_order, c.id, c.short_name, c.name
+             ORDER BY w.sort_order
+             LIMIT {$limit} OFFSET {$offset}"
+        );
+        $stmt->execute([$canonId]);
+        $works = $stmt->fetchAll();
+
+        if ($works === []) {
+            return [];
+        }
+
+        $ids          = array_map(static fn (array $w): int => (int) $w['id'], $works);
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+
+        $stmt = $this->pdo->prepare(
+            "SELECT wt.work_id, wt.tag_id, wt.verified, t.tag_group, t.code, t.label
+             FROM work_tag wt JOIN tag t ON t.id = wt.tag_id
+             WHERE wt.work_id IN ({$placeholders})
+             ORDER BY FIELD(t.tag_group,'obdobi','podobdobi','narodni','forma','special'), t.sort_order"
+        );
+        $stmt->execute($ids);
+
+        $tags = [];
+        foreach ($stmt->fetchAll() as $row) {
+            $tags[(int) $row['work_id']][] = [
+                'group'    => $row['tag_group'],
+                'code'     => $row['code'],
+                'label'    => $row['label'],
+                'verified' => (int) $row['verified'] === 1,
+                'tag_id'   => (int) $row['tag_id'],
+            ];
+        }
+
+        return array_map(
+            static fn (array $w): array => [
+                'id'         => (int) $w['id'],
+                'title'      => $w['title'],
+                'authors'    => $w['authors'],
+                'chapter'    => $w['chapter'],
+                'chapter_id' => (int) $w['chapter_id'],
+                'tags'       => $tags[(int) $w['id']] ?? [],
+            ],
+            $works
+        );
+    }
+
+    public function worksNeedingReviewCount(int $canonId): int
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT COUNT(*) FROM work w
+             WHERE w.canon_id = ?
+               AND EXISTS (SELECT 1 FROM work_tag wt WHERE wt.work_id = w.id AND wt.verified = 0)'
+        );
+        $stmt->execute([$canonId]);
+
+        return (int) $stmt->fetchColumn();
+    }
+
+    /** Confirms every unverified tag of one work at once. */
+    public function confirmWork(int $workId): int
+    {
+        $stmt = $this->pdo->prepare(
+            "UPDATE work_tag SET source = 'human', verified = 1 WHERE work_id = ? AND verified = 0"
+        );
+        $stmt->execute([$workId]);
+
+        return $stmt->rowCount();
+    }
+
     public function confirmGroup(int $canonId, int $chapterId, string $tagGroup, string $code): int
     {
         $stmt = $this->pdo->prepare(

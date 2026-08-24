@@ -39,6 +39,7 @@ use Kanon\Import\EntryFixes;
 use Kanon\Import\EntrySplitter;
 use Kanon\Import\HintTagger;
 use Kanon\Import\Importer;
+use Kanon\Repo\ListRepository;
 use Kanon\Repo\WorkRepository;
 use Kanon\View\View;
 
@@ -68,6 +69,7 @@ $page = function (string $title, string $template, array $data = []) use (
         'rulebar'          => '',
         // V administraci se nikdo neregistruje - účty zakládá správce.
         'showRegister'     => false,
+        'canonUrl'         => '/dila',
         'canonDocumentUrl' => $canonDocumentUrl,
         'schoolYear'       => $schoolYear,
         'content'   => $view->render($template, $data + [
@@ -106,7 +108,7 @@ $importer = new Importer(
     new EntryFixes($appRoot . '/data/entry-fixes-2025-2026.json'),
 );
 
-$authController      = new AuthController($auth, $users, $throttle, $session, $csrf, $page);
+$authController      = new AuthController($auth, $users, $throttle, $session, $csrf, $page, new ListRepository($pdo), $canonId);
 $dashboardController = new DashboardController($adminRepo, $canonId, $page);
 $reviewController    = new ReviewController($reviewRepo, $workRepo, $session, $csrf, $canonId, $page);
 $ruleController      = new RuleController($adminRepo, $session, $csrf, $canonId, $page);
@@ -120,14 +122,19 @@ $router = new Router();
 $router->get('/prihlaseni', static fn (): Response => $authController->showLogin());
 $router->post('/prihlaseni', static fn (): Response => $authController->login($_POST));
 $router->post('/odhlasit', static fn (): Response => $authController->logout($_POST));
+$router->get('/ucet', static fn (): Response => $guard() ?? $authController->showAccount());
 $router->get('/heslo', static fn (): Response => $guard() ?? $authController->showPassword());
 $router->post('/heslo', static fn (): Response => $guard() ?? $authController->changePassword($_POST));
 
 $router->get('/', static fn (): Response => $guard() ?? $dashboardController->show());
 
 $router->get('/kontrola', static fn (): Response => $guard() ?? $reviewController->show($_GET));
-$router->post('/kontrola/potvrdit-skupinu', static fn (): Response => $guard() ?? $reviewController->confirmGroup($_POST));
-$router->post('/kontrola/opravit', static fn (): Response => $guard() ?? $reviewController->correct($_POST));
+$router->post('/kontrola/potvrdit-znacku', static fn (): Response => $guard() ?? $reviewController->confirmTag($_POST));
+$router->post('/kontrola/potvrdit-dilo', static fn (): Response => $guard() ?? $reviewController->confirmWork($_POST));
+
+$router->get('/kontrola/skupiny', static fn (): Response => $guard() ?? $reviewController->showGroups($_GET));
+$router->post('/kontrola/skupiny/potvrdit', static fn (): Response => $guard() ?? $reviewController->confirmGroup($_POST));
+$router->post('/kontrola/skupiny/opravit', static fn (): Response => $guard() ?? $reviewController->correct($_POST));
 
 $router->get('/dila', static fn (): Response => $guard() ?? $workController->index($_GET));
 $router->get('/dila/{id}', static fn (array $p): Response => $guard() ?? $workController->edit($p));

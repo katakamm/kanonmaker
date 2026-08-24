@@ -10,6 +10,7 @@ use Kanon\Auth\UserRepository;
 use Kanon\Http\Csrf;
 use Kanon\Http\Response;
 use Kanon\Http\Session;
+use Kanon\Repo\ListRepository;
 
 final class AuthController
 {
@@ -20,7 +21,23 @@ final class AuthController
         private readonly Session $session,
         private readonly Csrf $csrf,
         private readonly \Closure $page,
+        private readonly ?ListRepository $lists = null,
+        private readonly int $canonId = 0,
     ) {
+    }
+
+    public function showAccount(): Response
+    {
+        $user = $this->auth->user();
+
+        if ($user === null) {
+            return Response::redirect('/prihlaseni');
+        }
+
+        return Response::html(($this->page)('Účet', 'account', [
+            'lists'          => $this->lists?->allForUser((int) $user['id']) ?? [],
+            'currentCanonId' => $this->canonId,
+        ]));
     }
 
     public function showRegister(): Response

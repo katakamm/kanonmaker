@@ -93,6 +93,36 @@ final class CanonCoverageTest extends TestCase
         self::assertGreaterThan(0, (int) $stmt->fetchColumn());
     }
 
+    /**
+     * The school's criterion reads "poezie: minimálně 3 tituly (z toho alespoň 1
+     * … české poezie 2. pol. 20. století …)". The "z toho" only holds if every
+     * work carrying the special tag is itself Czech poetry — otherwise a list of
+     * three poems plus one special-tagged novel would pass a check the school
+     * would fail.
+     */
+    public function testTheCzechModernPoetryTagOnlyEverSitsOnCzechPoetry(): void
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT w.title FROM work w
+             JOIN work_tag wt ON wt.work_id = w.id
+             JOIN tag t ON t.id = wt.tag_id
+             WHERE w.canon_id = ? AND t.code = 'ceska_poezie_po_1950'
+               AND (
+                   NOT EXISTS (SELECT 1 FROM work_tag x JOIN tag t2 ON t2.id = x.tag_id
+                               WHERE x.work_id = w.id AND t2.tag_group = 'forma' AND t2.code = 'poezie')
+                or NOT EXISTS (SELECT 1 FROM work_tag y JOIN tag t3 ON t3.id = y.tag_id
+                               WHERE y.work_id = w.id AND t3.tag_group = 'narodni' AND t3.code = 'ceska')
+               )"
+        );
+        $stmt->execute([$this->canonId]);
+
+        self::assertSame(
+            [],
+            $stmt->fetchAll(\PDO::FETCH_COLUMN),
+            'these works are tagged as Czech modern poetry but are not tagged Czech poetry'
+        );
+    }
+
     public function testAllFiveSubperiodsAreRepresented(): void
     {
         $stmt = $this->pdo->prepare(

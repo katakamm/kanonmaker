@@ -28,6 +28,36 @@ final class ListRepository
         return (int) $this->pdo->lastInsertId();
     }
 
+    /**
+     * Every list the student has, one per school year.
+     *
+     * @return list<array{id:int, canon_id:int, school_year:string, works:int, updated_at:string}>
+     */
+    public function allForUser(int $userId): array
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT l.id, l.canon_id, c.school_year, l.updated_at, COUNT(li.work_id) AS works
+             FROM list l
+             JOIN canon c ON c.id = l.canon_id
+             LEFT JOIN list_item li ON li.list_id = l.id
+             WHERE l.user_id = ?
+             GROUP BY l.id, l.canon_id, c.school_year, l.updated_at
+             ORDER BY c.school_year DESC'
+        );
+        $stmt->execute([$userId]);
+
+        return array_map(
+            static fn (array $r): array => [
+                'id'          => (int) $r['id'],
+                'canon_id'    => (int) $r['canon_id'],
+                'school_year' => $r['school_year'],
+                'works'       => (int) $r['works'],
+                'updated_at'  => $r['updated_at'],
+            ],
+            $stmt->fetchAll()
+        );
+    }
+
     /** @return list<int> */
     public function workIds(int $listId): array
     {

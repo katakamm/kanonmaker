@@ -87,6 +87,7 @@ $page = function (string $title, string $template, array $data = []) use (
         'flashes'   => $session->takeFlashes(),
         'rulebar'          => $rulebar,
         'showRegister'     => true,
+        'canonUrl'         => '/kanon',
         'canonDocumentUrl' => $canonDocumentUrl,
         'schoolYear'       => $schoolYear,
         'content'   => $view->render($template, $data + [
@@ -98,7 +99,7 @@ $page = function (string $title, string $template, array $data = []) use (
     ]);
 };
 
-$authController   = new AuthController($auth, $users, $throttle, $session, $csrf, $page);
+$authController   = new AuthController($auth, $users, $throttle, $session, $csrf, $page, $listRepo, $canonId);
 $canonController  = new CanonController($workRepo, $canonId, $page, $listIds);
 $searchController = new SearchController($workRepo, $canonId, $page, $listIds);
 $listController   = new ListController($auth, $listRepo, $workRepo, $session, $csrf, $canonId, $page);
@@ -114,6 +115,7 @@ $router->post('/registrace', static fn (): Response => $authController->register
 $router->get('/prihlaseni', static fn (): Response => $authController->showLogin());
 $router->post('/prihlaseni', static fn (): Response => $authController->login($_POST));
 $router->post('/odhlasit', static fn (): Response => $authController->logout($_POST));
+$router->get('/ucet', static fn (): Response => $authController->showAccount());
 $router->get('/heslo', static fn (): Response => $authController->showPassword());
 $router->post('/heslo', static fn (): Response => $authController->changePassword($_POST));
 
