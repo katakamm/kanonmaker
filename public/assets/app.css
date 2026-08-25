@@ -14,12 +14,30 @@ a { color: var(--accent); }
 .wrap { max-width: 44rem; margin: 0 auto; padding: 0 1rem; }
 
 .top {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: .75rem; padding: .9rem 1rem;
+    /* Na telefonu název na svůj řádek a tlačítka pod něj — vedle sebe se na
+       360 px nevejdou a lámala se do dvou řad. Od 40rem výš zpátky na jeden
+       řádek, tam už místo je. */
+    display: flex; flex-direction: column; align-items: stretch;
+    gap: .55rem; padding: .8rem 1rem;
     background: var(--bg-raised); border-bottom: 1px solid var(--line);
 }
 .top h1 { margin: 0; font-size: 1.1rem; letter-spacing: .01em; }
-.top nav { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; justify-content: flex-end; font-size: .9rem; }
+.top nav {
+    display: flex; gap: .4rem; align-items: center;
+    flex-wrap: nowrap;              /* tlačítka zůstanou v jedné řadě */
+    overflow-x: auto;               /* a když je jich moc, řada se posouvá */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    font-size: .85rem;
+}
+.top nav::-webkit-scrollbar { display: none; }
+.top nav .btn, .top nav form { flex: 0 0 auto; }
+.top nav .btn { padding: .35rem .7rem; }
+
+@media (min-width: 40rem) {
+    .top { flex-direction: row; align-items: center; justify-content: space-between; gap: .75rem; }
+    .top nav { justify-content: flex-end; }
+}
 
 .field { display: block; margin: 0 0 1rem; }
 .field span { display: block; margin-bottom: .3rem; font-size: .85rem; color: var(--ink-soft); }

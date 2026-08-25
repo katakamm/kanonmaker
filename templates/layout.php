@@ -20,7 +20,7 @@
             <a class="btn btn--quiet btn--small" href="/napoveda">Nápověda</a>
             <a class="btn btn--quiet btn--small" href="/prihlaseni">Přihlásit</a>
             <?php if ($showRegister ?? true): ?>
-                <a class="btn btn--quiet btn--small" href="/registrace">Registrovat</a>
+                <a class="btn btn--quiet btn--small" href="/registrace">Registrace</a>
             <?php endif; ?>
         <?php endif; ?>
     </nav>
