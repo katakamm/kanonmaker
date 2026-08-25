@@ -115,6 +115,9 @@ $router->post('/registrace', static fn (): Response => $authController->register
 $router->get('/prihlaseni', static fn (): Response => $authController->showLogin());
 $router->post('/prihlaseni', static fn (): Response => $authController->login($_POST));
 $router->post('/odhlasit', static fn (): Response => $authController->logout($_POST));
+$router->get('/napoveda', static fn (): Response => Response::html(
+    $page('Nápověda', 'napoveda', ['rules' => $ruleSet->evaluate([])])
+));
 $router->get('/ucet', static fn (): Response => $authController->showAccount());
 $router->get('/heslo', static fn (): Response => $authController->showPassword());
 $router->post('/heslo', static fn (): Response => $authController->changePassword($_POST));

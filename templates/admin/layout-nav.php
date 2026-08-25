@@ -6,5 +6,6 @@
         <li><a class="chip chip--forma" href="/pravidla">Pravidla</a></li>
         <li><a class="chip chip--special" href="/import">Import</a></li>
         <li><a class="chip chip--obdobi" href="/uzivatele">Uživatelé</a></li>
+        <li><a class="chip chip--kapitola" href="/napoveda">Nápověda</a></li>
     </ul>
 </nav>

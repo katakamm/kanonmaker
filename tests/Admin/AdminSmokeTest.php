@@ -43,6 +43,7 @@ final class AdminSmokeTest extends TestCase
             'rules'     => ['/pravidla'],
             'import'    => ['/import'],
             'users'     => ['/uzivatele'],
+            'help'      => ['/napoveda'],
         ];
     }
 

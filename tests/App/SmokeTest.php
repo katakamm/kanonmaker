@@ -44,6 +44,7 @@ final class SmokeTest extends TestCase
             'search json' => ['/hledat.json?q=capek'],
             'login'       => ['/prihlaseni'],
             'register'    => ['/registrace'],
+            'help'        => ['/napoveda'],
         ];
     }
 
@@ -69,6 +70,17 @@ final class SmokeTest extends TestCase
         [, $body] = $this->fetch('/hledat?q=capek');
 
         self::assertStringContainsString('Válka s mloky', $body);
+    }
+
+    public function testTheHelpPageExplainsTheRulesItActuallyChecks(): void
+    {
+        [, $body] = $this->fetch('/napoveda');
+
+        // Generated from the live rules, so editing a minimum in the
+        // administration cannot leave the guide quietly lying to students.
+        self::assertStringContainsString('Celkem 25 titulů', $body);
+        self::assertStringContainsString('Drama', $body);
+        self::assertStringContainsString('otazník', $body, 'the unverified mark needs explaining');
     }
 
     public function testUnknownPathIsFourOhFour(): void

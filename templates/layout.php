@@ -13,9 +13,11 @@
     <nav>
         <?php if ($user !== null): ?>
             <a class="btn btn--quiet btn--small" href="<?= $this->e($canonUrl ?? '/kanon') ?>">Kánon</a>
+            <a class="btn btn--quiet btn--small" href="/napoveda">Nápověda</a>
             <a class="btn btn--quiet btn--small" href="/ucet">Účet</a>
         <?php else: ?>
             <a class="btn btn--quiet btn--small" href="<?= $this->e($canonUrl ?? '/kanon') ?>">Kánon</a>
+            <a class="btn btn--quiet btn--small" href="/napoveda">Nápověda</a>
             <a class="btn btn--quiet btn--small" href="/prihlaseni">Přihlásit</a>
             <?php if ($showRegister ?? true): ?>
                 <a class="btn btn--quiet btn--small" href="/registrace">Registrovat</a>

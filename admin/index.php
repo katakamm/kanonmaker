@@ -122,6 +122,7 @@ $router = new Router();
 $router->get('/prihlaseni', static fn (): Response => $authController->showLogin());
 $router->post('/prihlaseni', static fn (): Response => $authController->login($_POST));
 $router->post('/odhlasit', static fn (): Response => $authController->logout($_POST));
+$router->get('/napoveda', static fn (): Response => $guard() ?? Response::html($page('Nápověda', 'admin/napoveda')));
 $router->get('/ucet', static fn (): Response => $guard() ?? $authController->showAccount());
 $router->get('/heslo', static fn (): Response => $guard() ?? $authController->showPassword());
 $router->post('/heslo', static fn (): Response => $guard() ?? $authController->changePassword($_POST));
